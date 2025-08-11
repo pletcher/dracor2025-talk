@@ -1,0 +1,185 @@
+%% The first command in your LaTeX source must be the \documentclass command.
+%%
+%% Options:
+%% twocolumn : Two column layout.
+%% hf: enable header and footer.
+\documentclass[
+% twocolumn,
+% hf,
+]{ceurart}
+
+%%
+%% One can fix some overfulls
+\sloppy
+
+%%
+%% Minted listings support 
+%% Need pygment <http://pygments.org/> <http://pypi.python.org/pypi/Pygments>
+\usepackage{listings}
+%% auto break lines
+\lstset{breaklines=true}
+
+\usepackage{rotating}
+
+%%
+%% end of the preamble, start of the body of the document source.
+\begin{document}
+
+%%
+%% Rights management information.
+%% CC-BY is default license.
+\copyrightyear{2025}
+\copyrightclause{Copyright for this paper by its authors.
+  Use permitted under Creative Commons License Attribution 4.0
+  International (CC BY 4.0).}
+
+%%
+%% This command is for the conference information
+\conference{Workshop on Computational Drama Analysis, 3 September 2025, Berlin, DE}
+
+%%
+%% The "title" command
+\title{Towards a Computational Approach to News-Bringers in Ancient Greek Tragedy}
+
+%%
+%% The "author" command and its associated commands are used to define
+%% the authors and their affiliations.
+\author[1]{Charles Pletcher}[%
+orcid=0000-0003-2734-5511,
+email=charles.pletcher@tufts.edu,
+url=https://github.com/pletcher,
+]
+\cormark[1]
+\address[1]{Tufts University, Department of Classical Studies, 10 Upper Campus Road, Medford, Massachusetts 02155, United States}
+
+%% Footnotes
+\cortext[1]{Corresponding author.}
+
+%%
+%% The abstract is a short summary of the work to be presented in the
+%% article.
+\begin{abstract}
+This paper argues that messenger speeches (\textit{Botenberichte}) in the ancient tragedies of Aeschylus, Sophocles, and Euripides have not received the computational attention that they deserve. I first draw attention to this gap by surveying traditional literary approaches to the genre, showing how the definition of ``messenger speech'' is already problematic from a qualitative perspective. Next, I present a series of initial inquiries into quantitative and computational approaches to messenger speeches, beginning with a stylometric comparison to Homeric epic and proceeding through topic modeling and, using the editions prepared by DraCor, network analysis. In conclusion, I offer a brief discussion of these preliminary findings and potential avenues for further inquiry.
+\end{abstract}
+
+%%
+%% Keywords. The author(s) should pick words that accurately describe
+%% the work being presented. Separate the keywords with commas.
+\begin{keywords}
+  tragedy \sep
+  messenger speeches \sep
+  Homer \sep
+  topic modeling \sep
+  network theory
+\end{keywords}
+
+%%
+%% This command processes the author and affiliation and title
+%% information and builds the first part of the formatted document.
+\maketitle
+
+\section{Introduction}
+
+The usual history of (so-called) ``messenger speeches'' in drama begins with Homer: the ancient bard's narrative energeia, to borrow a term from Pseudo-Longinus, is said to animate the off-stage events that news-bringers narrate. Irene J. F. de Jong has perhaps most famously applied a narratological lens to both Homer and tragic messengers, followed a few years later by Barbara Goward and James Barrett their own seminal works on messenger speeches in 2002 \cite{deJong2011, deJong1991, Goward1999, Barrett2002}. Although de Jong championed the view that messengers are not featureless conduits for the dramatist's voice but are instead vehicles for bias and selective memory, Barrett then qualified this view by noting that messengers' narrative effectiveness is inversely proportional to their stage presence: ``The messenger's own body,'' he writes, ``is implicitly—and explicitly, on occasion—a hindrance, inasmuch as his success as a messenger depends upon his acquiring the invulnerability granted by freedom from bodily constraints'' \cite[100]{Barrett2002}. More recently, Margaret Dickin showed how the roles of messengers in tragedy increased over time and became ``vehicles for star-power,'' while others, like Felix Budelmann and Evert van Emde Boas, explored how messengers direct the audience's affective energies \cite{Dickin2009, Budelmann.vanEmdeBoas2020}. Florence Yoon's interventions have further disrupted the ``category'' of messengers by revealing the mistakes of painting with too broad a brush: angeloi, messengers proper, and kerykes, ``heralds,'' perform different functions in tragedy \cite{Yoon2022}. We are clearly on well-traveled ground.
+
+Despite the steady stream of innovative approaches to messenger speeches in tragedy, there have been few attempts to address the various classes of news-bringers from a computational angle. Where such examinations have occurred, they have, to my knowledge---which admittedly might be lacking, please feel free to correct me here!---taken place in the context of broader computational studies of drama, such as the work of Julia Jennifer Beine, Frank Fischer, and Viktor Illmer presented at the DH Conference in 2024; the examination of the chorus by María Teresa Santa María Fernández and Monika Dabrowska; or the early work on social network theory and Greek tragedy by Jeff Rydberg-Cox \cite{Beine.etal2024, Fernandez.Dabrowska2023, Rydberg-Cox2011}.
+
+In this paper, I attempt to start some discussions about the quantifiable natures of news-bringers and their speeches in ancient tragedy. Everything that I write here should be understood as experimental and preliminary---there is a surprising amount of ground to cover. At the same time, I hope that by exploring the ways that we can measure a character's ``messenger-type-ness,'' or the extent to which they perform a ``messenger function'' (to borrow a term from C. W. Marshall \cite{Marshall2006}), we can shed new light on this often-misunderstood class of dramatic actors and thus better understand how they reflect their culture's relationship to secondhand information.
+
+\section{Epic Style?}
+
+In some ways, what prompted this paper was a casual investigation of the \textit{Stylo} package \cite{Eder.etal2016} by way of answering the question, ``Do tragic messengers really speak with epic diction?'' The affirmative answer to this question is usually assumed, but even preliminary results raise important questions.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{tragedy-homer-pca}
+  \caption{Principal component analysis of stylometric features from individual speakers in tragedy (various colors) and Homeric epic (yellow). This analysis did not control for metrical differences, as it analyzed running 4-grams.}
+\end{figure}
+
+Although the dimensionality reduction in the analysis that produced the above chart did not account for metrical differences---Homeric epic is in dactylic hexameters, while messengers \textit{usually} speak in iambic trimeters---the strong clustering effect exhibited by meter helps to highlight some of the more interesting outliers. For one, the Tutor from Sophocles' \textit{Electra} speaks in a style that gravitates towards the Homeric. This result makes sense, however, when we consider that much of his vocabulary---and indeed, much of the scene that he describes---comes straight from the chariot race in \textit{Iliad} 23, even if he delivers the speech in iambs rather than dactyls.
+
+More surprisingly, the Phrygian from Euripides' \textit{Orestes}---a late tragedy, first performed in 408 BCE---also exhibits a style that leans Homeric, at least compared to other speakers in tragedy. This result is unusual: unlike most of the other news-bringers, the Phrygian \textit{sings} his report in lyric meters. We might have thus expected principal component analysis to reveal him as an outlier in the \textit{other} direction. Perhaps, however, the variations in his lyric meters produced greater overlap with Homeric style than the typical iambs of other news-bringers.
+
+Not to belabor the discussion of a quick and limited experiment, but it bears noting that the decision not to control for meter came from a consideration of the costs of doing so. When comparing tragedy to epic, we are working with surprisingly little data---a little under 250,000 words in tragedy, and about 350,000 words in the Homeric epics (the \textit{Iliad} and \textit{Odyssey}). Approaches that work well for millions of words fail to produce meaningful data on these smaller corpora, and we must consequently take care when employing any lossy data cleaning methods like lemmatization that might otherwise help us control for features like meter.
+
+Further, if, as sometimes seems to be the case, the argument in favor of positively comparing messenger-type speeches to Homeric epic means that the audience was expected to \textit{hear} Homeric speech during a messenger's report, then meter is an indespensible component of the performance, and something to which any analysis should attend.
+
+Perhaps, in the end, stylometry was the wrong tool to use here, as it mainly confirmed what we could observe simply by paying attention to meter. The tight grouping of tragedy and epic, however, could provide a useful starting point for further inquiry into questions of \textit{tragic} style specifically. As Paschalis Agapitos and Andreas van Cranenberg have shown with Seneca's \textit{Octavia} and \textit{Hercules Oetaeus}, and as Nikos Manousakis and Efstathios Stamatatos have shown with Euripides' \textit{Rhesus}, stylometry can offer vital insights into cases of contested authorship \cite{Agapitos.vanCranenburgh2024, Manousakis.Stamatatos2018}. With the Homeric question set the side, we can imagine a study that examines the evolution of choral style in tragedy, for example.
+
+A literary question lurks here too: must we insist that tragedy answer to Homer? I have no ready answer, and I have been known to call tragedy (affectionately) ``Homer fan-fiction.'' But disabused as we now must be that messengers borrow too much from their epic predecessor, I want to turn to analyses that look at lexis rather than style.
+
+\section{What do news-bringers talk about?}
+
+In this section, I discuss the use of topic modeling through Latent Dirchlet Allocation (LDA) and Non-Negative Matrix Factorization (NMF) to extract ``topics''---groups of frequently coöccurring terms---from the tragic and epic corpora, as well as from the smaller corpora of speeches in Homer and of messenger-type speeches within tragedy.
+
+For this analysis, I identified messenger-type speeches by manually adding to the list that Barrett compiled in an appendix to his 2002 monograph \cite[223--224]{Barrett2002}. For speeches in Homer, I relied on the DICES API \cite{Forstall.etal2022}. The editions used are the latest available from the Perseus Project \cite{Crane.etal2025}. After extracting the text for each speaker from the TEI XML, the documents were sentencized, tokenized, and lemmatized using the pre-trained greCy\footnote{\url{https://spacy.io/universe/project/grecy}} models before finally being written in the CoNLL-U\footnote{\url{https://universaldependencies.org/format.html}} format. Because greCy occasionally misses stop-words, an additional stop-word filter was applied via a manually curated list before running the following analyses.
+
+These results are preliminary, and the topics are numbered rather than descriptively labeled, so I will refer to them by their (sub-)corpus and the number assigned to them in the plot, e.g., ``Tragedy 1,'' ``Epic 5,'' etc.
+
+The tragedy corpus and the messenger sub-corpus contained too few tokens for meaningful results from LDA, which uses TF--IDF vectors, so that terms that appear in fewer ``documents''---individual speakers, for these analyses---have proportionally greater weights. This approach already poses some challenges for small corpora, which are exacerbated by the prevalence of hapaxes in this data set. For these reasons, I will mainly focus on the results of the NMF analyses, which are plotted below.
+
+
+%% Note to editors: Apologies that these plots are impossible to read. I've been fighting with
+%% LaTeX for a bit to try to make them legible (and to appear in the right spot),
+%% but would appreciate any advice that you have on that front.
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth,scale=0.5]{homeric-topics_NMF}
+  \caption{NMF--based topic modeling of the corpus of speeches in Homer.}
+\end{figure}
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth,scale=0.5]{tragic-topics_NMF}
+  \caption{NMF--based topic modeling of tragedy.}
+\end{figure}
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth,scale=0.5]{messenger-topics_NMF}
+  \caption{NMF--based topic modeling of messenger-type speeches in tragedy.}
+\end{figure}
+
+As these topics show---and as we should expect---Athenian tragedy and Homeric epic demonstrate a significant amount of lexical overlap. At the same time, notable trends emerge, and the extracted topics by and large make sense: Homer 1, for instance, includes lemmata like μάχη (``war''), ἀργεῖος (``Argive''), θυμός (``spirit''), and μάχομαι (the verb ``fight''), representing the martial tenor of the \textit{Iliad}. Tragedy 3 includes ἀγαμέμνων (``Agamemnon''), βάρβαρος (``barbarian''---apt given the frequent accusation of Agamemnon acting in an un-Greek-like manner), γάμος (``wedding'' or ``marriage''), alongside two terms for a household, οἶκος and δόμος, all terms that cause frequent conflict in various plays.
+
+Inspired by the work of Thomas Koentges in measuring the ``philosophical-ness'' of the Greek corpus, the top 10 topics from Homer and tragedy were measured proportionally for messenger speeches and, as a control, for tragedy as a whole \cite{Koentges2020}.
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{topics-by-messenger}
+  \caption{Proportion of each of the top 10 topics from Homer (shades of blue) and tragedy (shades of red) for each messenger in the tragic corpus.}
+\end{figure}
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{topics-by-tragedy}
+  \caption{Proportion of each of the top 10 topics from Homer (shades of blue) and tragedy (shades of red) for each tragedy.}
+\end{figure}
+
+Although I do not have space here to discuss these results in detail, we can see at a glance that messengers speak no more ``Homerically'' than other characters in tragedy, at least in terms of vocabulary. It seems that we will need to find support elsewhere when it comes to the Homeric influence on tragic news-bringers.
+
+Other trends are visible as well: named characters who deliver messenger-type speeches show a slight preference for tragic lexis in thos speeches, compared to anonymous news-bringers with names like ``Messenger,'' ``Shepherd,'' and ``Nurse.'' And in tragedy as a whole, the proportion of Homeric vocabulary remains remarkably consistent over the seven decades measured here, even across plays that do not touch directly on the stories contained in the epics (such as Sophocles' Theban plays or Euripides' \textit{Medea}).
+
+\section{Audiences}
+
+I want to turn now to a discussion of messengers' audiences in each tragedy. The DraCor documentation includes a helpful tutorial\footnote{https://dracor-org.github.io/dracor-notebooks/catch-a-protagonist-in-dracor/catch-a-protagonist-in-dracor.html} describing ways of ranking character centrality. Unsurprisingly, when applied to the tragedies in DraCor, choruses and named characters dominate the centrality rankings: the first character who can even be said to deliver a messenger-type speech is Clytaemestra in Aeschylus' \textit{Agamemnon}, who by centrality ranking comes in 45th. Talthybius in Euripides' \textit{Trojan Women} is the highest-ranking herald at 73rd, and the first messenger to appear is the Ἄγγελος (``Messenger'') of Aeschylus' \textit{Persians} at 79th.
+
+The messenger of \textit{Persians} is an interesting outlier, as he speaks at greater length than any other single messenger in tragedy. To put this in perspective, nearly every named character in Sophocles' \textit{Trachiniae} delivers a messenger-type speech at some point, and the play consists of nearly twenty-five percent messenger-type speeches (as Jebb surmised over a century ago) \cite{Jebb1902}. \textit{Persians} consists of nearly seventeen percent messenger-type speech, every line of which is delivered by this single messenger. These plays contain far and away the greatest concentrations of messenger-type speeches, which on average only account for 8.5\% of a given tragedy's lines.
+
+In some ways, this is confirmation of Trilcke et al.'s observations on ``small worlds'' in more modern plays \cite[7--33]{Andresen.Reiter2024}. A central character---usually the chorus in ancient tragedy---connects clusters of other characters in each play's network, although I am not sure that in the case of the ancient plays we can say that the chorus ``[carries] the plot'' \cite[22]{Andresen.Reiter2024}. There is also the problem of dramatic separation: the chorus in Greek tragedy typically occupied a distinct part of the performance space, the ὀρχήστρα or ``dancing space,'' while the action of the other actors was concentrated around the σκηνή, a wooden structure that served as a play's background and main scenery.
+
+In the same volume as Trilcke et al.'s paper, Rebecca Hicke and David Mimno provide another way of approaching the problems of influence in drama \cite[87--105]{Andresen.Reiter2024}. By charting the percentage of words spoken by women (as a group or as specific characters) in each scene of Shakespeare's comedies, they add a chronological element that is difficult to capture in network analyses. It might be instructive, however, to examine network ``snapshots'' in ancient tragedy, comparing the graphs at the beginning and end of each episode to determine what changes were introduced and by whom during a given exchange. This approach might also provide a solution to the chorus problem, as their odes take place separately from the main episodes that drive the plot.
+
+\section{Conclusion(s)}
+
+By way of conclusion, I want to stress the preliminary and experimental nature of this talk. Much work remains to be done, especially in terms of addressing the challenges of meaningful network analysis within the constraints of ancient tragedy. Nevertheless, a few key themes have emerged in this brief discussion.
+
+First, the tension between Homer and the tragedians provides a productive background for continuing investigation and discussion. The results presented here demonstrate that messenger-type speeches in tragedy lack discernible Homeric lexis, which helps us view these ancient performances in a new light. The embodied and stage-directed actions delivered alongside the words of a messenger-type speech belong to the ephemera of staged performance---we cannot recover them. Nevertheless, and contrary to much earlier work, by emphasizing the need to understand gesture and affect in addition to vocabulary and diction, we position messenger-type speeches alongside other dramatic performances, rather than an epic appendage that dramatists have maintained merely for convenience. Moreover, this examination of tragic lexis should also guide further discussion of tragic diction and performance theory, helping to make sense, for example, of the enigmatic roles that props and costumes played alongside the actors who employed them by observing how speech patterns change alongside movement. Oliver Taplin has famously tackled many of these questions from a literary and performance studies angle, and we would profitably follow his lead through our own computational engagements with the material \cite{Taplin1977, Taplin2003}.
+
+Second, the preliminary topic modeling results presented here ought to be followed by a broader investigation involving more of the Greek corpus, similar to the work carried out by Koentges \cite{Koentges2020}. Although constraining the models to the vocabulary available from lemmatized editions of Homer and tragedy helps to narrow the focus and reveal useful groupings, like ``Odysseus'' and ``ship,'' an analysis that includes larger swaths of the ancient corpus could profitably reveal connections to history and oratory (for starters) that could not be covered in this study.
+
+Relatedly, I have left questions of Aristophanic comedy to the side. However, given the comedian's penchant for quoting tragedy---sometimes at length, as he does with Euripides' \textit{Telephus} and \textit{Helen} in \textit{Thesmophoriazusae}---a more thorough examination of tragic-comic intertexts could help to contextualize the performance culture of fifth-century Athens to an even greater degree.
+
+Finally, the question of tragic networks remains. In addition to the scene co-occurrences analyzed here, I plan to investigate other methods that can better account for tragedy's idiosyncracies. For example, much tragic ``action'' occurs off-stage, and it should be possible to study the networks that emerge from narrated interactions as well. One thinks, for example, of J. M. Mossman's seminal article ``Waiting for Neoptolemus,'' which discusses the strange non-presence of Neoptolemus in Euripides' \textit{Andromache}. Further, as noted above, it is important to examine tragedy as a series of events, and not simply as the static network of relationships that emerges at the end of the drama (when many of the characters are dead and/or destitute anyway).
+
+I plan to continue this work between now and the conference in a few weeks, and I hope to offer substantial updates to the studies presented in this brief paper. In the meantime, however, I hope that these provocations towards computational approaches to messenger-type speeches prove useful beyond my own research, and that they demonstrate the need for discussion and debate about how to proceed most effectively.
+
+\bibliography{zotero-refs}
+
+\end{document}
