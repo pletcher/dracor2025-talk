@@ -9,6 +9,7 @@
 *.synctex.gz
 *.xmpdata
 *.xmpi
+*.zip
 
 tmp
 
