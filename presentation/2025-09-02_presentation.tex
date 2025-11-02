@@ -1,0 +1,167 @@
+% Latex template: mahmoud.s.fahmy@students.kasralainy.edu.eg
+% For more details: https://www.sharelatex.com/learn/Beamer
+
+\documentclass{beamer}					% Document class
+
+\usepackage[english]{babel}				% Set language
+\usepackage[utf8]{inputenc}			% Set encoding
+\usepackage{fontspec}
+
+\mode<presentation>						% Set options
+{
+  \usetheme{default}					% Set theme
+  \usecolortheme{default} 				% Set colors
+  \usefonttheme{professionalfonts}
+  \usefonttheme{serif}
+  \setmainfont{Palatino}  				% Set font theme
+  \setbeamertemplate{caption}[numbered]	% Set caption to be numbered
+}
+
+% Uncomment this to have the outline at the beginning of each section highlighted.
+%\AtBeginSection[]
+%{
+%  \begin{frame}{Outline}
+%    \tableofcontents[currentsection]
+%  \end{frame}
+%}
+
+
+\setbeameroption{hide notes}
+
+\usepackage{graphicx}					% For including figures
+\usepackage{booktabs}					% For table rules
+\usepackage{hyperref}					% For cross-referencing
+
+\title{Towards a Computational Approach to News-Bringers in Ancient Greek Tragedy}	% Presentation title
+\author{Charles Pletcher}
+\institute{Tufts University}					% Author affiliation
+\date{9 September 2025}
+
+\begin{document}
+
+% Title page
+% This page includes the informations defined earlier including title, author/s, affiliation/s and the date
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Outline
+% This page includes the outline (Table of content) of the presentation. All sections and subsections will appear in the outline by default.
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+% The following is the most frequently used slide types in beamer
+% The slide structure is as follows:
+%
+%\begin{frame}{<slide-title>}
+%	<content>
+%\end{frame}
+
+\section{Introduction}
+
+\begin{frame}{Introduction}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{hermes-met}
+    \caption{Terracotta bell-krater (bowl for mixing wine and water), attributed to the Persephone Painter. ca. 440 BCE. The Metroplitan Museum 28.57.23.}
+  \end{figure}
+
+  \note[item]{In this talk, I want to talk about ancient Greek messengers in tragedy. The usual history of (so-called) ``messenger speeches'' in drama begins with Homer: the ancient bard's narrative \textit{energeia}, to borrow a term from Pseudo-Longinus, is said to animate the off-stage events that news-bringers narrate. Irene J. F. de Jong has perhaps most famously applied a narratological lens to both Homer and tragic messengers, followed a few years later by Barbara Goward and James Barrett with their own seminal works on messenger speeches in 2002 \cite{deJong2011, deJong1991, Goward1999, Barrett2002}. Although de Jong championed the view that messengers are not featureless conduits for the dramatist's voice but are instead focalizers with bias and selective memory, Barrett then qualified this view by noting that messengers' narrative effectiveness is inversely proportional to their stage presence: ``The messenger's own body,'' he writes, ``is implicitly—and explicitly, on occasion—a hindrance, inasmuch as his success as a messenger depends upon his acquiring the invulnerability granted by freedom from bodily constraints'' \cite[100]{Barrett2002}. More recently, Margaret Dickin showed how the roles of messengers in tragedy increased over time and became ``vehicles for star-power,'' while others, like Felix Budelmann and Evert van Emde Boas, explored how messengers direct the audience's affective energies \cite{Dickin2009, Budelmann.vanEmdeBoas2020}. Florence Yoon's interventions have further disrupted the ``category'' of messengers by revealing the mistakes of painting with too broad a brush: \textit{angeloi}, messengers proper, and \textit{kerykes}, ``heralds,'' perform different functions in tragedy \cite{Yoon2022}. We are clearly on well-traveled ground.
+
+  In this talk, I attempt to start some discussions about the quantifiable natures of news-bringers and their speeches in ancient tragedy. Everything that I say here should be understood as experimental and preliminary---there is a surprising amount of ground to cover. At the same time, I hope that by exploring the ways that we can measure a character's ``messenger-type-ness,'' or the extent to which they perform a ``messenger function'' (to borrow a term from C. W. Marshall \cite{Marshall2006}), we can shed new light on this often-misunderstood class of dramatic actors and thus better understand how they reflect their culture's relationship to secondhand information.}
+\end{frame}
+
+\section{First steps}
+
+\begin{frame}{Epic style?}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\linewidth]{../tragedy-homer-pca}
+  \caption{Principal component analysis of stylometric features from individual speakers in tragedy (various colors) and Homeric epic (yellow). This analysis did not control for metrical differences, as it analyzed running 4-grams.}
+\end{figure}
+
+\note[item]{
+  In some ways, what prompted this paper was a casual investigation of the \textit{Stylo} package \cite{Eder.etal2016} by way of answering the question, ``Do tragic messengers really speak with epic diction?'' The affirmative answer to this question is usually assumed, but even preliminary results raise important questions.
+
+  Although the dimensionality reduction in the analysis that produced the above chart did not account for metrical differences---Homeric epic is in dactylic hexameters, while messengers \textit{usually} speak in iambic trimeters---the strong clustering effect exhibited by meter helps to highlight some of the more interesting outliers. For one, the Tutor from Sophocles' \textit{Electra} speaks in a style that gravitates towards the Homeric. This result makes sense, however, when we consider that much of his vocabulary---and indeed, much of the scene that he describes---comes straight from the chariot race in \textit{Iliad} 23, even if he delivers the speech in iambs rather than dactyls.
+
+More surprisingly, the Phrygian from Euripides' \textit{Orestes}---a late tragedy, first performed in 408 BCE---also exhibits a style that leans Homeric, at least compared to other speakers in tragedy. This result is unusual: unlike most of the other news-bringers, the Phrygian \textit{sings} his report in lyric meters. We might have thus expected principal component analysis to reveal him as an outlier in the \textit{other} direction. Perhaps, however, the variations in his lyric meters produced greater overlap with Homeric style than the typical iambs of other news-bringers.
+
+Not to belabor the discussion of a quick and limited experiment, but it bears noting that the decision not to control for meter came from a consideration of the costs of doing so. When comparing tragedy to epic, we are working with surprisingly little data---a little under 250,000 words in tragedy, and about 350,000 words in the Homeric epics (the \textit{Iliad} and \textit{Odyssey}). Approaches that work well for millions of words fail to produce meaningful data on these smaller corpora, and we must consequently take care when employing any lossy data cleaning methods like lemmatization that might otherwise help us control for features like meter.
+
+Further, if, as sometimes seems to be the case, the argument in favor of positively comparing messenger-type speeches to Homeric epic means that the audience was expected to \textit{hear} Homeric speech during a messenger's report, then meter is an indespensible component of the performance, and something to which any analysis should attend.
+
+Perhaps, in the end, stylometry was the wrong tool to use here, as it mainly confirmed what we could observe simply by paying attention to meter. The tight grouping of tragedy and epic, however, could provide a useful starting point for further inquiry into questions of \textit{tragic} style specifically. As Paschalis Agapitos and Andreas van Cranenberg have shown with Seneca's \textit{Octavia} and \textit{Hercules Oetaeus}, and as Nikos Manousakis and Efstathios Stamatatos have shown with Euripides' \textit{Rhesus}, stylometry can offer vital insights into cases of contested authorship \cite{Agapitos.vanCranenburgh2024, Manousakis.Stamatatos2018}. With the Homeric question set the side, we can imagine a study that examines the evolution of choral style in tragedy, for example.
+
+A literary question lurks here too: must we insist that tragedy answer to Homer? I have no ready answer, and I have been known to call tragedy (affectionately) ``Homer fan-fiction.'' But disabused as we now must be that messengers borrow too much from their epic predecessor, I want to turn to analyses that look at lexis rather than style.}
+
+\end{frame}
+
+\begin{frame}{What's the news?}
+\begin{figure}[h]
+  \includegraphics[width=0.5\linewidth]{../homeric-topics_NMF}
+  \caption{NMF--based topic modeling of the corpus of speeches in Homer.}
+\end{figure}
+
+\note[item]{
+In this section, I discuss the use of topic modeling through Latent Dirchlet Allocation (LDA) and Non-Negative Matrix Factorization (NMF) to extract ``topics''---groups of frequently coöccurring terms---from the tragic and epic corpora, as well as from the smaller corpora of speeches in Homer and of messenger-type speeches within tragedy.
+
+For this analysis, I identified messenger-type speeches by manually adding to the list that Barrett compiled in an appendix to his 2002 monograph \cite[223--224]{Barrett2002}. For speeches in Homer, I relied on the DICES API \cite{Forstall.etal2022}. The editions used are the latest available from the Perseus Project \cite{Crane.etal2025}. After extracting the text for each speaker from the TEI XML, the documents were sentencized, tokenized, and lemmatized using the pre-trained greCy\footnote{\url{https://spacy.io/universe/project/grecy}} models before finally being written in the CoNLL-U\footnote{\url{https://universaldependencies.org/format.html}} format. Because greCy occasionally misses stop-words, an additional stop-word filter was applied via a manually curated list before running the following analyses.
+
+These results are preliminary, and the topics are numbered rather than descriptively labeled, so I will refer to them by their (sub-)corpus and the number assigned to them in the plot, e.g., ``Tragedy 1,'' ``Epic 5,'' etc.
+
+The tragedy corpus and the messenger sub-corpus contained too few tokens for meaningful results from LDA, which uses TF--IDF vectors, so that terms that appear in fewer ``documents''---individual speakers, for these analyses---have proportionally greater weights. This approach already poses some challenges for small corpora, which are exacerbated by the prevalence of hapaxes in this data set. For these reasons, I will mainly focus on the results of the NMF analyses, which are plotted below.}
+\end{frame}
+
+\begin{frame}{What's the news?}
+\begin{figure}[h]
+  \includegraphics[width=0.5\linewidth]{../tragic-topics_NMF}
+  \caption{NMF--based topic modeling of tragedy.}
+\end{figure}
+
+\note[item]{
+As these topics show---and as we should expect---Athenian tragedy and Homeric epic demonstrate a significant amount of lexical overlap. At the same time, notable trends emerge, and the extracted topics by and large make sense: Homer 1, for instance, includes lemmata like μάχη (``war''), ἀργεῖος (``Argive''), θυμός (``spirit''), and μάχομαι (the verb ``fight''), representing the martial tenor of the \textit{Iliad}. Tragedy 3 includes ἀγαμέμνων (``Agamemnon''), βάρβαρος (``barbarian''---apt given the frequent accusation of Agamemnon acting in an un-Greek-like manner), γάμος (``wedding'' or ``marriage''), alongside two terms for a household, οἶκος and δόμος, all terms that cause frequent conflict in various plays.}
+\end{frame}
+
+\begin{frame}{What's the news?}
+\begin{figure}[h]
+  \includegraphics[width=0.5\linewidth]{../messenger-topics_NMF}
+  \caption{NMF--based topic modeling of messenger-type speeches in tragedy.}
+\end{figure}
+\end{frame}
+
+\section{The very topic model of a modern major messenger?}
+
+\begin{frame}{Topics by messenger}
+\begin{figure}[h]
+  \includegraphics[width=0.5\linewidth]{../topics-by-messenger}
+  \caption{Proportion of each of the top 10 topics from Homer (shades of blue) and tragedy (shades of red) for each messenger in the tragic corpus.}
+\end{figure}
+
+\note[item]{
+Inspired by the work of Thomas Koentges in measuring the ``philosophical-ness'' of the Greek corpus, the top 10 topics from Homer and tragedy were measured proportionally for messenger speeches and, as a control, for tragedy as a whole \cite{Koentges2020}.
+
+Although I do not have space here to discuss these results in detail, we can see at a glance that messengers speak no more ``Homerically'' than other characters in tragedy, at least in terms of vocabulary. It seems that we will need to find support elsewhere when it comes to the Homeric influence on tragic news-bringers.}
+\end{frame}
+
+\begin{frame}{Topics by tragedy}
+\begin{figure}[h]
+  \includegraphics[width=0.5\linewidth]{../topics-by-tragedy}
+  \caption{Proportion of each of the top 10 topics from Homer (shades of blue) and tragedy (shades of red) for each tragedy.}
+\end{figure}
+
+\note[item]{
+Other trends are visible as well: named characters who deliver messenger-type speeches show a slight preference for tragic lexis in thos speeches, compared to anonymous news-bringers with names like ``Messenger,'' ``Shepherd,'' and ``Nurse.'' And in tragedy as a whole, the proportion of Homeric vocabulary remains remarkably consistent over the seven decades measured here, even across plays that do not touch directly on the stories contained in the epics (such as Sophocles' Theban plays or Euripides' \textit{Medea}).}
+
+\end{frame}
+
+\section{References}
+
+% Adding the option 'allowframebreaks' allows the contents of the slide to be expanded in more than one slide.
+\begin{frame}[allowframebreaks]{References}
+	\tiny\bibliography{../zotero-refs}
+  \bibliographystyle{apalike}
+\end{frame}
+
+\end{document}
