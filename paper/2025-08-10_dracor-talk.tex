@@ -1,0 +1,826 @@
+%% The first command in your LaTeX source must be the \documentclass command.
+%%
+%% Options:
+%% twocolumn : Two column layout.
+%% hf: enable header and footer.
+\documentclass[
+  % twocolumn,
+  % hf,
+]{ceurart}
+
+%%
+%% One can fix some overfulls
+\sloppy
+
+%%
+%% Minted listings support
+%% Need pygment <http://pygments.org/> <http://pypi.python.org/pypi/Pygments>
+\usepackage{listings}
+%% auto break lines
+\lstset{breaklines=true}
+
+\usepackage{rotating}
+\usepackage{hyperref}
+\usepackage{longtable}
+
+%%
+%% end of the preamble, start of the body of the document source.
+\begin{document}
+
+%%
+%% Rights management information.
+%% CC-BY is default license.
+\copyrightyear{2025}
+\copyrightclause{Copyright for this paper by its authors.
+  Use permitted under Creative Commons License Attribution 4.0
+International (CC BY 4.0).}
+
+%%
+%% This command is for the conference information
+\conference{Workshop on Computational Drama Analysis, 3 September
+2025, Berlin, DE}
+
+%%
+%% The "title" command
+\title{The Cast of Messengers: An approach to style and lexis in the news-bringers of Attic tragedy}
+
+%%
+%% The "author" command and its associated commands are used to define
+%% the authors and their affiliations.
+\author[1]{Charles Pletcher}[%
+  orcid=0000-0003-2734-5511,
+  email=charles.pletcher@tufts.edu,
+  url=https://github.com/pletcher,
+]
+\cormark[1]
+\address[1]{Tufts University, Department of Classical Studies, 10
+Upper Campus Road, Medford, Massachusetts 02155, United States}
+
+%% Footnotes
+\cortext[1]{Corresponding author.}
+
+%%
+%% The abstract is a short summary of the work to be presented in the
+%% article.
+\begin{abstract}
+  This paper argues that messenger speeches (\textit{Botenberichte})
+  in the ancient tragedies of Aeschylus, Sophocles, and Euripides
+  have not received the computational attention that they deserve. I
+  first draw attention to this gap by surveying traditional literary
+  approaches to the genre, showing how the definition of ``messenger
+  speech'' is already problematic from a qualitative perspective.
+  Next, I present a series of initial inquiries into quantitative and
+  computational approaches to messenger speeches, beginning with a
+  stylometric comparison to Homeric epic and proceeding through topic
+  modeling and, using the editions prepared by DraCor, network
+  analysis. In conclusion, I offer a brief discussion of these
+  preliminary findings and potential avenues for further inquiry.
+\end{abstract}
+
+%%
+%% Keywords. The author(s) should pick words that accurately describe
+%% the work being presented. Separate the keywords with commas.
+\begin{keywords}
+  tragedy \sep
+  messenger speeches \sep
+  Homer \sep
+  topic modeling \sep
+  network theory
+\end{keywords}
+
+%%
+%% This command processes the author and affiliation and title
+%% information and builds the first part of the formatted document.
+\maketitle
+
+\section{Introduction}
+
+The usual history of (so-called) ``messenger speeches'' in drama
+begins with Homer: the ancient bard's narrative \textit{energeia}, to
+borrow a term from Pseudo-Longinus, is said to animate the off-stage
+events that news-bringers narrate. Irene J. F. de Jong has perhaps
+most famously applied a narratological lens to both Homer and tragic
+messengers, followed a few years later by Barbara Goward and James
+Barrett with their own seminal works on messenger speeches in 2002
+\cite{deJong2011, deJong1991, Goward1999, Barrett2002}. Although de
+Jong championed the view that messengers are not featureless conduits
+for the dramatist's voice but are instead focalizers with bias and
+selective memory, Barrett then qualified this view by noting that
+messengers' narrative effectiveness is inversely proportional to
+their stage presence: ``The messenger's own body,'' he writes, ``is
+implicitly—and explicitly, on occasion—a hindrance, inasmuch as his
+success as a messenger depends upon his acquiring the invulnerability
+granted by freedom from bodily constraints'' \cite[100]{Barrett2002}.
+More recently, Margaret Dickin showed how the roles of messengers in
+tragedy increased over time and became ``vehicles for star-power,''
+while others, like Felix Budelmann and Evert van Emde Boas, explored
+how messengers direct the audience's affective energies
+\cite{Dickin2009, Budelmann.vanEmdeBoas2020}. Florence Yoon's
+interventions have further disrupted the ``category'' of messengers
+by revealing the mistakes of painting with too broad a brush:
+\textit{angeloi}, messengers proper, and \textit{kerykes},
+``heralds,'' perform different functions in tragedy \cite{Yoon2022}.
+We are clearly on well-traveled ground.
+
+Despite the steady stream of innovative approaches to messenger
+speeches in tragedy, there have been few attempts to address the
+various classes of news-bringers from a computational angle. Where
+such examinations have occurred, they have, to my knowledge, taken
+place in the context of broader computational studies
+of drama, such as the work of Julia Jennifer Beine, Frank Fischer,
+and Viktor Illmer presented at the DH Conference in 2024; the
+examination of the chorus by María Teresa Santa María Fernández and
+Monika Dabrowska; or the early work on social network theory and
+Greek tragedy by Jeff Rydberg-Cox \cite{Beine.etal2024,
+Fernandez.Dabrowska2023, Rydberg-Cox2011}.
+
+In this paper, I attempt to start some discussions about the
+quantifiable natures of news-bringers and their speeches in ancient
+tragedy. Everything that I write here should be understood as
+experimental and preliminary---there is a surprising amount of ground
+to cover. At the same time, I hope that by exploring the ways that we
+can measure a character's ``messenger-type-ness,'' or the extent to
+which they perform a ``messenger function'' (to borrow a term from C.
+W. Marshall \cite{Marshall2006}), we can shed new light on this
+often-misunderstood class of dramatic actors and thus better
+understand how they reflect their culture's relationship to
+secondhand information.
+
+\section{Epic Style?}
+
+In some ways, what prompted this paper was a casual investigation of
+the \textit{Stylo} package \cite{Eder.etal2016} by way of answering
+the question, ``Do tragic messengers really speak with epic
+diction?'' The affirmative answer to this question is usually
+assumed, but even preliminary results raise important questions. As Paschalis
+Agapitos and Andreas van Cranenberg have shown with Seneca's
+\textit{Octavia} and \textit{Hercules Oetaeus}, and as Nikos
+Manousakis and Efstathios Stamatatos have shown with Euripides'
+\textit{Rhesus}, stylometry can offer vital insights into cases of
+contested authorship \cite{Agapitos.vanCranenburgh2024,
+Manousakis.Stamatatos2018}. Even in a case with clear authorial and
+generic delineation---such as comparing Homeric epic and Attic tragedy---
+stylometry might help us notice outliers by providing some measure
+of distinction between the clusters that emerge.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{tragedy-homer-pca}
+  \caption{Principal component analysis of stylometric features from
+    individual speakers in tragedy (various colors) and Homeric epic
+    (yellow). This analysis did not control for metrical differences,
+  as it analyzed running 4-character–grams.}
+\end{figure}
+
+Although the dimensionality reduction in the analysis that produced
+the above chart did not account for metrical differences---Homeric
+epic is in dactylic hexameters, while messengers \textit{usually}
+speak in iambic trimeters---the strong clustering effect exhibited by
+meter helps to highlight some of the more interesting outliers. For
+one, the Tutor from Sophocles' \textit{Electra} speaks in a style
+that gravitates towards the Homeric. This result makes sense,
+however, when we consider that much of his vocabulary---and indeed,
+much of the scene that he describes---comes straight from the chariot
+race in \textit{Iliad} 23, even if he delivers the speech in iambs
+rather than dactyls.
+
+More surprisingly, the Phrygian from Euripides' \textit{Orestes}---a
+late tragedy, first performed in 408 BCE---also exhibits a style that
+leans Homeric, at least compared to other speakers in tragedy. This
+result is unusual: unlike most of the other news-bringers, the
+Phrygian \textit{sings} his report in lyric meters. We might have
+thus expected principal component analysis to reveal him as an
+outlier in the \textit{other} direction. Perhaps, however, the
+variations in his lyric meters produced greater overlap with Homeric
+style than the typical iambs of other news-bringers.
+
+Not to belabor the discussion of a quick and limited experiment, but
+it bears noting that the decision not to control for meter came from
+a consideration of the costs of doing so. When comparing tragedy to
+epic, we are working with surprisingly little data---a little under
+250,000 words in tragedy, and about 350,000 words in the Homeric
+epics (the \textit{Iliad} and \textit{Odyssey}). Approaches that work
+well for millions of words fail to produce meaningful data on these
+smaller corpora, and we must consequently take care when employing
+any lossy data cleaning methods like lemmatization that might
+otherwise help us control for features like meter.
+
+Further, if, as sometimes seems to be the case, the argument in favor
+of positively comparing messenger-type speeches to Homeric epic means
+that the audience was expected to \textit{hear} Homeric speech during
+a messenger's report, then meter is an indespensible component of the
+performance, and something to which any analysis should attend.
+
+Although the tight clustering of tragedy and epic is apparent, a
+closer inspection does show that many messengers---\textit{angeloi},
+\textit{kerykes}, as well as named characters like those mentioned
+above---tend towards the Homeric side of tragedy, even when they
+speak in tragic trimeters and not epic hexameters. This stylometric
+analysis thus provides a useful starting point for further inquiry
+into questions of \textit{tragic} style specifically, as tragic
+messengers, despite their slight affinity for Homer, still remain
+clearly within their generic confines. Stylometry, in this case, appears to
+confirm our prior intuitions while nevertheless prompting additional
+questions about messenger-type speeches in tragedy: what makes them
+distinct from other kinds of tragic speech (or song, for that matter)?
+A literary question lurks here too: must we insist that tragedy
+answer to Homer? In other words, how can we shift our focus to how
+tragedy responds to itself? Further, does it use its subgenres, like odes
+and messenger-type speeches, to encode those responses?
+
+I turn my attention to these questions for the remainder of this paper.
+
+\section{What do news-bringers talk about?}
+
+In this section, I discuss the use of topic modeling through Latent
+Dirchlet Allocation (LDA) and Non-Negative Matrix Factorization (NMF)
+to extract ``topics''---groups of frequently coöccurring terms---from
+the tragic and epic corpora, as well as from the smaller corpora of
+speeches in Homer and of messenger-type speeches within tragedy.
+
+For this analysis, I identified messenger-type speeches by manually
+adding to the list that Barrett compiled in an appendix to his 2002
+monograph \cite[223--224]{Barrett2002}. For speeches in Homer, I
+relied on the DICES API \cite{Forstall.etal2022}. The editions used
+are the latest available from the Perseus Project
+\cite{Crane.etal2025}. After extracting the text for each speaker
+from the TEI XML, the documents were sentencized, tokenized, and
+lemmatized using the pre-trained
+greCy\footnote{\url{https://spacy.io/universe/project/grecy}} models
+before finally being written in the
+CoNLL-U\footnote{\url{https://universaldependencies.org/format.html}}
+format. Because greCy occasionally misses stop-words, an additional
+stop-word filter was applied via a manually curated list before
+running the following analyses.
+
+These results are preliminary, and the topics are numbered rather
+than descriptively labeled, so I will refer to them by their
+(sub-)corpus and the number assigned to them in the plot, e.g.,
+``Tragedy 1,'' ``Epic 5,'' etc.
+
+The tragedy corpus and the messenger sub-corpus contained too few
+tokens for meaningful results from LDA, which uses TF--IDF vectors,
+so that terms that appear in fewer ``documents''---individual
+speakers, for these analyses---have proportionally greater weights.
+This approach already poses some challenges for small corpora, which
+are exacerbated by the prevalence of hapaxes in this data set. For
+these reasons, I will mainly focus on the results of the NMF
+analyses, which are plotted below.
+
+%% Note to editors: Apologies that these plots are impossible to
+% read. I've been fighting with
+%% LaTeX for a bit to try to make them legible (and to appear in the
+% right spot),
+%% but would appreciate any advice that you have on that front.
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth,scale=0.5]{homeric-topics_NMF}
+  \caption{NMF--based topic modeling of the corpus of speeches in Homer.}
+\end{figure}
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth,scale=0.5]{tragic-topics_NMF}
+  \caption{NMF--based topic modeling of tragedy.}
+\end{figure}
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth,scale=0.5]{messenger-topics_NMF}
+  \caption{NMF--based topic modeling of messenger-type speeches in tragedy.}
+\end{figure}
+
+As these topics show---and as we should expect---Athenian tragedy and
+Homeric epic demonstrate a significant amount of lexical overlap. At
+the same time, notable trends emerge, and the extracted topics by and
+large make sense: Homer 1, for instance, includes lemmata like μάχη
+(``war''), ἀργεῖος (``Argive''), θυμός (``spirit''), and μάχομαι (the
+verb ``fight''), representing the martial tenor of the
+\textit{Iliad}. Tragedy 3 includes ἀγαμέμνων (``Agamemnon''),
+βάρβαρος (``barbarian''---apt given the frequent accusation of
+Agamemnon acting in an un-Greek-like manner), γάμος (``wedding'' or
+``marriage''), alongside two terms for a household, οἶκος and δόμος,
+all terms that cause frequent conflict in various plays.
+
+Inspired by the work of Thomas Koentges in measuring the
+``philosophical-ness'' of the Greek corpus, the top 10 topics from
+Homer and tragedy were measured proportionally for messenger speeches
+and, as a control, for tragedy as a whole \cite{Koentges2020}.
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{topics-by-messenger}
+  \caption{Proportion of each of the top 10 topics from Homer (shades
+  of blue) and tragedy (shades of red) for each messenger in the tragic corpus.}
+\end{figure}
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{topics-by-tragedy}
+  \caption{Proportion of each of the top 10 topics from Homer (shades
+  of blue) and tragedy (shades of red) for each tragedy.}
+\end{figure}
+
+Although I do not have space here to discuss these results in detail,
+we can see at a glance that messengers speak no more ``Homerically''
+than other characters in tragedy, at least in terms of vocabulary. It
+seems that we will need to find support elsewhere when it comes to
+the Homeric influence on tragic news-bringers.
+
+Other trends are visible as well: named characters who deliver
+messenger-type speeches show a slight preference for tragic lexis in
+those speeches, compared to anonymous news-bringers with names like
+``Messenger,'' ``Shepherd,'' and ``Nurse.'' And in tragedy as a
+whole, the proportion of Homeric vocabulary remains remarkably
+consistent over the seven decades measured here, even across plays
+that do not touch directly on the stories contained in the epics
+(such as Sophocles' Theban plays or Euripides' \textit{Medea}).
+
+\section{Audiences}
+
+I want to turn now to a discussion of messengers' audiences in each
+tragedy. The DraCor documentation includes a helpful
+tutorial\footnote{\url{https://dracor-org.github.io/dracor-notebooks/catch-a-protagonist-in-dracor/catch-a-protagonist-in-dracor.html}}
+describing ways of ranking character centrality. Unsurprisingly, when
+applied to the tragedies in DraCor, choruses and named characters
+dominate the centrality rankings: the first character who can even be
+said to deliver a messenger-type speech is Clytaemestra in Aeschylus'
+\textit{Agamemnon}, who by centrality ranking comes in 45th.
+Talthybius in Euripides' \textit{Trojan Women} is the highest-ranking
+named herald at 73rd, and the first messenger-proper to appear is the
+Ἄγγελος (``Messenger'') of Aeschylus' \textit{Persians} at 79th. The
+next \textit{angelos} to appear is from Euripides' \textit{Helen}, in
+96th place. The rest of the \textit{angeloi} appear in the bottom
+half of the ranking, making the messenger of \textit{Persians}
+something of an outlier. (See the \hyperref[sec:appendix]{Appendix}
+for a full ranked list of characters in DraCor.)
+
+The outlier status of the messenger in \textit{Persians} is not
+surprising, as he speaks at greater length than any other single
+messenger in tragedy. To put this in perspective, nearly every named
+character in Sophocles' \textit{Trachiniae} delivers a messenger-type
+speech at some point, and the play consists of nearly twenty-five
+percent messenger-type speeches (as Jebb surmised over a century ago)
+\cite{Jebb1902}. \textit{Persians} consists of nearly seventeen
+percent messenger-type speech, every line of which is delivered by
+this single messenger. These plays contain far and away the greatest
+concentrations of messenger-type speeches, which on average only
+account for 8.5\% of a given tragedy's lines.
+
+In some ways, this is confirmation of Trilcke et al.'s observations
+on ``small worlds'' in more modern plays
+\cite[7--33]{Andresen.Reiter2024}. A central character---usually the
+chorus in ancient tragedy---connects clusters of other characters in
+each play's network, although I am not sure that in the case of the
+ancient plays we can say that the chorus ``[carries] the plot''
+\cite[22]{Andresen.Reiter2024}. There is also the problem of dramatic
+separation, discussed in greater detail below: the chorus in Greek
+tragedy typically occupied a distinct part of the performance space,
+the ὀρχήστρα or ``dancing space,'' while the action of the other
+actors was concentrated around the σκηνή, a wooden structure that
+served as a play's background and main scenery.
+
+In the same volume as Trilcke et al.'s paper, Rebecca Hicke and David
+Mimno provide another way of approaching the problems of influence in
+drama \cite[87--105]{Andresen.Reiter2024}. By charting the percentage
+of words spoken by women (as a group or as specific characters) in
+each scene of Shakespeare's comedies, they add a chronological
+element that is difficult to capture in network analyses. It might be
+instructive, however, to examine network ``snapshots'' in ancient
+tragedy, comparing the graphs at the beginning and end of each
+episode to determine what changes were introduced and by whom during
+a given exchange. This approach might also provide a solution to the
+chorus problem, as their odes take place separately from the main
+episodes that drive the plot.
+
+\section{Case Study in Movable Networks: Euripides's \textit{Andromache}}
+
+Wanting to take a provisional stab at modeling a network over time, I
+have drafted a network visualization using Mike Bostock's Observable
+Framework and D3.js \cite{Observable2025, Bostock2025}. The
+experiment is visible here:
+>>[REPOSITORY REMOVED]<<.
+For this initial pass, I encoded the major actions of Euripides'
+\textit{Andromache}---that is, I noted where the text indicated an
+entrance or an exit, as well as where characters engaged in dialogue.
+Capturing dialogue is particularly important for correctly modeling a
+network in Athenian tragedy, largely because of the chorus. Aristotle
+famously criticized Euripides for not integrating the chorus into his
+drama as well as Sophocles and Aeschylus (\textit{Poetics 1456a
+25--32}), meaning that we cannot assume that just because the chorus
+is ``on stage''---itself a problematic descriptor!---that they
+actively participate in the network of the drama. As I hope to show,
+recording dialogue as moments when speakers actively speak to each
+other, rather than moments when they stand next to each other
+onstage, helps reveal the intricate and shifting influences that are
+active in tragedy.
+
+Oliver Taplin's pioneering work on Aeschylean stagecraft sets the
+scene (as it were) for this experiment. His early description of the
+challenges of defining ``entry'' and ``exit'' is worth quoting at length:
+``At first sight it might seem obvious that by 'entry' we mean the
+movement which brings an actor in to the field of vision of the
+audience, and by 'exit' we mean the movement which takes him out of
+it. This is certainly what we mean by the words; but their full range
+is more complicated. Apart from the small but valid complaints that
+not all of the actor comes into view at the same moment (apparently
+the side-entrances at Athens sloped uphill) and that he would not
+enter or leave the field of vision of all the audience simultaneously
+(especially not in a theatre of Greek shape), there is the more
+substantial point that we cannot possibly know at what moment the
+actor crossed the line between out of sight and in sight of the
+audience. \ldots And so in the study of entrances and exits the stage
+movement which is of interest is not the momentary movement in and
+out of view, but the prolonged movement across the centre of
+attention, and back again''\cite[7]{Taplin1977}.
+
+Further complicating matters, the chorus did not enter and exit like
+the other actors, nor did it do so in the same place. Rather, it
+danced into the \textit{orchēstra} during its \textit{parodos}
+(``entrance song'') stayed in the \textit{orchēstra} during its
+\textit{stasima} (``stationary'' songs)---and left while or shortly
+after it sang the \textit{exodos} (``exit song''). Its continued
+presence during the bulk of the tragedy thus complicates
+``traditional'' approaches to network analysis, even before we
+consider that its ``presence'' is dramatically attenuated by its
+literal separation from the rest of the actors, who performed in
+front of the \textit{skēnē}.\footnote{See, e.g., Helene Foley's
+  ``Choral Identity in Greek Tragedy'' for a more in-depth discussion
+and additional bibliography on the chorus \cite{Foley2003}.} These
+problems become especially apparent in a drama like
+\textit{Andromache}, where the chorus alternates between close
+engagement with the dilemmas onstage and aloof (and, in this case,
+frankly misogynistic) reflection on feminine jealousy.
+
+As the following figure shows, redrawing the dramatic network at each
+``event'' helps to visualize when characters coexists in the
+performance space without addressing each other directly, as during
+the \textit{parodos}.
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{unconnected-network}
+  \caption{The Chorus and Andromache are each in their respective
+    performance spaces during the \textit{parodos}, but they are not
+  yet talking to each other.}
+\end{figure}
+
+By contrast, when Peleus enters, the characters engage in a heated
+\textit{agōn} that involves every speaking character onstage and in
+the \textit{orchēstra}---seemingly violating the three-actor rule
+with the singing Child, but I leave that discussion for another day.
+
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{connected-network}
+  \caption{The play's central \textit{agōn} involves every speaking
+  character onstage at some point.}
+\end{figure}
+
+Even a quick glance at these two plots reveals a striking difference
+between reading a dramatic network as the static result of
+conversations at the end of the drama versus modeling the network as
+an evolving group of ephemeral events. I intend for further
+investigation to measure the shifts in centrality and count-based
+measures of influence, and I welcome discussion about how to quantify
+this influence over time.
+
+I want to note, too, that \textit{Andromache} presents another,
+less-frequently encountered problem of mute actors at the end of the
+play. Scholars have long wondered whether Andromache and the Child
+re-enter for the final episode and \textit{exodos}, even though they
+do not speak, as the \textit{dea ex machina} Thetis seems to address
+them directly \cite{Golder1983}. For this experiment, I have not
+attempted to model mute actors---there are also several slaves and
+attendants that appear earlier in the play with Menelaus, for
+example---but I offer this conundrum as a potential jumping-off point
+for further discussion.
+
+\section{Conclusion(s)}
+
+By way of conclusion, I want to stress the preliminary and
+experimental nature of this talk. Much work remains to be done,
+especially in terms of addressing the challenges of meaningful
+network analysis within the constraints of ancient tragedy.
+Nevertheless, a few key themes have emerged in this brief discussion.
+
+First, the tension between Homer and the tragedians provides a
+productive background for continuing investigation and discussion.
+The results presented here demonstrate that messenger-type speeches
+in tragedy lack discernible Homeric lexis, which helps us view these
+ancient performances in a new light. The embodied and stage-directed
+actions delivered alongside the words of a messenger-type speech
+belong to the ephemera of staged performance---we cannot recover
+them. Nevertheless, and contrary to much earlier work, by emphasizing
+the need to understand gesture and affect in addition to vocabulary
+and diction, we position messenger-type speeches alongside other
+dramatic performances, rather than an epic appendage that dramatists
+have maintained merely for convenience. Moreover, this examination of
+tragic lexis should also guide further discussion of tragic diction
+and performance theory, helping to make sense, for example, of the
+enigmatic roles that props and costumes played alongside the actors
+who employed them by observing how speech patterns change alongside
+movement. Taplin has famously tackled many of these questions from a
+literary and performance studies angle, and we would profitably
+follow his lead through our own computational engagements with the
+material \cite{Taplin1977, Taplin2003}.
+
+Second, the preliminary topic modeling results presented here ought
+to be followed by a broader investigation involving more of the Greek
+corpus, similar to the work carried out by Koentges
+\cite{Koentges2020}. Although constraining the models to the
+vocabulary available from lemmatized editions of Homer and tragedy
+helps to narrow the focus and reveal useful groupings, like
+``Odysseus'' and ``ship,'' an analysis that includes larger swaths of
+the ancient corpus could profitably reveal connections to history and
+oratory (for starters) that could not be covered in this study.
+
+Relatedly, I have left questions of Aristophanic comedy to the side.
+However, given the comedian's penchant for quoting
+tragedy---sometimes at length, as he does with Euripides'
+\textit{Telephus}, \textit{Helen}, and \textit{Andromeda} in
+\textit{Thesmophoriazusae}---a more thorough examination of
+tragic-comic intertexts could help to contextualize the performance
+culture of fifth-century Athens to an even greater degree.
+
+Finally, the question of tragic networks remains. In addition to the
+scene co-presences analyzed here, other methods might
+better account for tragedy's idiosyncracies. For
+example, much tragic ``action'' occurs off-stage, and it should be
+possible to study the networks that emerge from narrated interactions
+as well. One thinks, for example, of J. M. Mossman's seminal article
+``Waiting for Neoptolemus,'' which discusses the strange non-presence
+of Neoptolemus in Euripides' \textit{Andromache} \cite{Mossman1996}. Further, as noted
+above, it is important to examine tragedy as a series of events, and
+not simply as the static network of relationships that emerges at the
+end of the drama (when many of the characters are dead and/or destitute anyway).
+As even the preliminary results in this paper show, the usual assumptions
+about tragic messenger speech merit closer scrutiny: although scholars have
+long detected something unusual about the way they speak---de Jong, for
+example, notes the prevalence of historic present-tense verbs
+\cite{deJong1991}---they do not seem to differ as readily as once supposed
+from the rest of tragedy's casts. Perhaps, in the end, we should attend
+as much to their similarities to other tragic characters as we do to
+messengers' differences.
+
+\section{Appendix – Speakers in tragedy ranked by network centrality average}
+\label{sec:appendix}
+
+\begin{longtable}{|c|c|c|c|c|}
+  \hline
+  \textbf{ID} & \textbf{Rank} & \textbf{Title} & \textbf{Name} &
+  \textbf{Centrality Average} \\
+  \hline
+  0 & 0 & Suppliant Women & choros & 1 \\ \hline
+  10 & 1 & Seven Against Thebes & choros & 1 \\ \hline
+  44 & 2 & Agamemnon & choros & 1 \\ \hline
+  40 & 3 & Eumenides & choros & 1 \\ \hline
+  29 & 4 & Libation Bearers & choros & 1 \\ \hline
+  23 & 5 & Persians & choros & 1 \\ \hline
+  197 & 6 & Oedipus Tyrannus & oidipous & 1.1 \\ \hline
+  163 & 7 & Electra & elektra & 1.1 \\ \hline
+  154 & 8 & Hecuba & hekabe & 1.1 \\ \hline
+  218 & 9 & Ichneutae & choros & 1.1 \\ \hline
+  221 & 10 & Ichneutae & kyllene & 1.1 \\ \hline
+  224 & 11 & Electra & elektra & 1.1 \\ \hline
+  71 & 12 & Rhesus & choros & 1.1 \\ \hline
+  242 & 13 & Ajax & choros & 1.1 \\ \hline
+  52 & 14 & The Trojan Women & hekabe & 1.1 \\ \hline
+  18 & 15 & Prometheus Bound & prometheus & 1.2 \\ \hline
+  192 & 16 & Philoctetes & neoptolemos & 1.2 \\ \hline
+  231 & 17 & Antigone & choros & 1.3 \\ \hline
+  206 & 18 & Oedipus at Colonus & oidipous & 1.3 \\ \hline
+  115 & 19 & Iphigenia in Aulis & agamemnon & 1.4 \\ \hline
+  62 & 20 & Suppliants & choros & 1.4 \\ \hline
+  171 & 21 & Bacchae & choros & 1.5 \\ \hline
+  182 & 22 & Trachiniae & choros & 1.5 \\ \hline
+  28 & 23 & Libation Bearers & orestes & 1.5 \\ \hline
+  155 & 24 & Hecuba & choros & 1.6 \\ \hline
+  55 & 25 & The Trojan Women & choros & 1.6 \\ \hline
+  128 & 26 & Ion & kreousa & 1.6 \\ \hline
+  107 & 27 & Iphigenia in Tauris & iphigeneia & 1.7 \\ \hline
+  134 & 28 & Heracles & amphitryon & 1.7 \\ \hline
+  209 & 29 & Oedipus at Colonus & choros & 1.7 \\ \hline
+  72 & 30 & Rhesus & hektor & 1.8 \\ \hline
+  225 & 31 & Electra & choros & 1.8 \\ \hline
+  143 & 32 & Helen & helene & 1.8 \\ \hline
+  136 & 33 & Heracles & choros & 1.8 \\ \hline
+  232 & 34 & Antigone & kreon & 1.8 \\ \hline
+  170 & 35 & Bacchae & dionysos & 1.8 \\ \hline
+  200 & 36 & Oedipus Tyrannus & choros & 1.8 \\ \hline
+  127 & 37 & Ion & choros & 1.8 \\ \hline
+  194 & 38 & Philoctetes & philoktetes & 1.8 \\ \hline
+  216 & 39 & Ichneutae & silenos & 1.8 \\ \hline
+  110 & 40 & Iphigenia in Tauris & choros & 1.9 \\ \hline
+  64 & 41 & Suppliants & adrastos & 1.9 \\ \hline
+  19 & 42 & Prometheus Bound & choros & 1.9 \\ \hline
+  98 & 43 & Orestes & orestes & 1.9 \\ \hline
+  45 & 44 & Agamemnon & klytaimestra & 2.1 \\ \hline
+  241 & 45 & Ajax & aias & 2.2 \\ \hline
+  24 & 46 & Persians & atossa & 2.2 \\ \hline
+  145 & 47 & Helen & choros & 2.2 \\ \hline
+  243 & 48 & Ajax & tekmessa & 2.2 \\ \hline
+  165 & 49 & Electra & choros & 2.2 \\ \hline
+  215 & 50 & Ichneutae & apollon & 2.2 \\ \hline
+  97 & 51 & Orestes & choros & 2.3 \\ \hline
+  126 & 52 & Ion & ion & 2.3 \\ \hline
+  37 & 53 & Eumenides & apollon & 2.4 \\ \hline
+  193 & 54 & Philoctetes & choros & 2.4 \\ \hline
+  179 & 55 & Trachiniae & deianeira & 2.5 \\ \hline
+  38 & 56 & Eumenides & orestes & 2.5 \\ \hline
+  87 & 57 & Phoenissae & choros & 2.5 \\ \hline
+  219 & 58 & Ichneutae & hemichoros a & 2.6 \\ \hline
+  63 & 59 & Suppliants & theseus & 2.6 \\ \hline
+  95 & 60 & Orestes & elektra & 2.6 \\ \hline
+  207 & 61 & Oedipus at Colonus & antigone & 2.6 \\ \hline
+  138 & 62 & Heracles & herakles & 2.6 \\ \hline
+  90 & 63 & Phoenissae & kreon & 2.7 \\ \hline
+  121 & 64 & Iphigenia in Aulis & klytaimestra & 2.7 \\ \hline
+  223 & 65 & Electra & orestes & 2.7 \\ \hline
+  174 & 66 & Bacchae & pentheus & 2.7 \\ \hline
+  117 & 67 & Iphigenia in Aulis & choros & 2.7 \\ \hline
+  164 & 68 & Electra & orestes & 2.7 \\ \hline
+  21 & 69 & Prometheus Bound & io & 2.8 \\ \hline
+  229 & 70 & Antigone & antigone & 2.8 \\ \hline
+  86 & 71 & Phoenissae & antigone & 2.8 \\ \hline
+  56 & 72 & The Trojan Women & talthybios & 2.9 \\ \hline
+  220 & 73 & Ichneutae & hemichoros b & 3 \\ \hline
+  48 & 74 & Agamemnon & kasandra & 3 \\ \hline
+  181 & 75 & Trachiniae & hyllos & 3.1 \\ \hline
+  108 & 76 & Iphigenia in Tauris & orestes & 3.1 \\ \hline
+  160 & 77 & Hecuba & agamemnon & 3.1 \\ \hline
+  25 & 78 & Persians & angelos & 3.2 \\ \hline
+  32 & 79 & Libation Bearers & klytaimestra & 3.2 \\ \hline
+  13 & 80 & Seven Against Thebes & antigone & 3.3 \\ \hline
+  202 & 81 & Oedipus Tyrannus & iokaste & 3.3 \\ \hline
+  146 & 82 & Helen & meneleos & 3.4 \\ \hline
+  112 & 83 & Iphigenia in Tauris & thoas & 3.4 \\ \hline
+  217 & 84 & Ichneutae & choros satyron & 3.4 \\ \hline
+  26 & 85 & Persians & eidolon dareiou & 3.4 \\ \hline
+  1 & 86 & Suppliant Women & danaos & 3.5 \\ \hline
+  199 & 87 & Oedipus Tyrannus & kreon & 3.5 \\ \hline
+  2 & 88 & Suppliant Women & basileus & 3.5 \\ \hline
+  84 & 89 & Phoenissae & iokaste & 3.5 \\ \hline
+  135 & 90 & Heracles & megara & 3.6 \\ \hline
+  58 & 91 & The Trojan Women & andromache & 3.6 \\ \hline
+  211 & 92 & Oedipus at Colonus & theseus & 3.6 \\ \hline
+  47 & 93 & Agamemnon & agamemnon & 3.7 \\ \hline
+  191 & 94 & Philoctetes & odysseus & 3.7 \\ \hline
+  148 & 95 & Helen & angelos & 3.7 \\ \hline
+  22 & 96 & Prometheus Bound & hermes & 3.7 \\ \hline
+  6 & 97 & Suppliant Women & danais & 3.7 \\ \hline
+  8 & 98 & Seven Against Thebes & eteokles & 3.7 \\ \hline
+  5 & 99 & Suppliant Women & choros therapainon & 3.7 \\ \hline
+  233 & 100 & Antigone & phylax & 3.8 \\ \hline
+  99 & 101 & Orestes & menelaos & 3.8 \\ \hline
+  150 & 102 & Helen & theoklymenos & 3.9 \\ \hline
+  101 & 103 & Orestes & pylades & 3.9 \\ \hline
+  80 & 104 & Rhesus & athena & 3.9 \\ \hline
+  122 & 105 & Iphigenia in Aulis & iphigeneia & 4 \\ \hline
+  161 & 106 & Hecuba & polymestor & 4 \\ \hline
+  173 & 107 & Bacchae & kadmos & 4.2 \\ \hline
+  78 & 108 & Rhesus & odysseus & 4.2 \\ \hline
+  162 & 109 & Electra & autourgos & 4.2 \\ \hline
+  222 & 110 & Electra & paidagogos & 4.2 \\ \hline
+  20 & 111 & Prometheus Bound & okeanos & 4.3 \\ \hline
+  31 & 112 & Libation Bearers & oiketes & 4.3 \\ \hline
+  41 & 113 & Eumenides & athena & 4.3 \\ \hline
+  12 & 114 & Seven Against Thebes & hemichorion b & 4.3 \\ \hline
+  4 & 115 & Suppliant Women & choros danaidon & 4.4 \\ \hline
+  39 & 116 & Eumenides & klytaimestras eidolon & 4.4 \\ \hline
+  16 & 117 & Prometheus Bound & kratos & 4.4 \\ \hline
+  156 & 118 & Hecuba & polyxene & 4.4 \\ \hline
+  131 & 119 & Ion & therapon & 4.4 \\ \hline
+  240 & 120 & Ajax & odysseus & 4.4 \\ \hline
+  166 & 121 & Electra & presbys & 4.5 \\ \hline
+  168 & 122 & Electra & klytaimestra & 4.5 \\ \hline
+  227 & 123 & Electra & klytaimnestra & 4.5 \\ \hline
+  109 & 124 & Iphigenia in Tauris & pylades & 4.5 \\ \hline
+  27 & 125 & Persians & xerxes & 4.5 \\ \hline
+  46 & 126 & Agamemnon & keryx & 4.5 \\ \hline
+  9 & 127 & Seven Against Thebes & angelos & 4.5 \\ \hline
+  7 & 128 & Suppliant Women & therapaina & 4.5 \\ \hline
+  230 & 129 & Antigone & ismene & 4.5 \\ \hline
+  247 & 130 & Ajax & teukros & 4.6 \\ \hline
+  11 & 131 & Seven Against Thebes & hemichorion a & 4.6 \\ \hline
+  3 & 132 & Suppliant Women & keryx & 4.6 \\ \hline
+  65 & 133 & Suppliants & keryx & 4.7 \\ \hline
+  36 & 134 & Eumenides & pythias & 4.7 \\ \hline
+  57 & 135 & The Trojan Women & kasandra & 4.7 \\ \hline
+  61 & 136 & Suppliants & aithra & 4.7 \\ \hline
+  123 & 137 & Iphigenia in Aulis & achilleus & 4.7 \\ \hline
+  196 & 138 & Philoctetes & herakles & 4.8 \\ \hline
+  79 & 139 & Rhesus & diomedes & 4.9 \\ \hline
+  17 & 140 & Prometheus Bound & hephaistos & 4.9 \\ \hline
+  203 & 141 & Oedipus Tyrannus & angelos & 5 \\ \hline
+  212 & 142 & Oedipus at Colonus & kreon & 5 \\ \hline
+  113 & 143 & Iphigenia in Tauris & angelos & 5 \\ \hline
+  142 & 144 & Heracles & theseus & 5.1 \\ \hline
+  49 & 145 & Agamemnon & aigisthos & 5.1 \\ \hline
+  132 & 146 & Ion & prophetis & 5.1 \\ \hline
+  176 & 147 & Bacchae & angelos & 5.2 \\ \hline
+  82 & 148 & Rhesus & heniochos & 5.2 \\ \hline
+  190 & 149 & Trachiniae & herakles & 5.2 \\ \hline
+  195 & 150 & Philoctetes & emporos & 5.2 \\ \hline
+  157 & 151 & Hecuba & odysseus & 5.3 \\ \hline
+  137 & 152 & Heracles & lykos & 5.3 \\ \hline
+  59 & 153 & The Trojan Women & menelaos & 5.3 \\ \hline
+  60 & 154 & The Trojan Women & helene & 5.3 \\ \hline
+  133 & 155 & Ion & athena & 5.4 \\ \hline
+  34 & 156 & Libation Bearers & aigisthos & 5.4 \\ \hline
+  184 & 157 & Trachiniae & lichas & 5.5 \\ \hline
+  89 & 158 & Phoenissae & eteokles & 5.5 \\ \hline
+  116 & 159 & Iphigenia in Aulis & presbytes & 5.5 \\ \hline
+  15 & 160 & Seven Against Thebes & keryx & 5.6 \\ \hline
+  129 & 161 & Ion & xouthos & 5.6 \\ \hline
+  93 & 162 & Phoenissae & angelos & 5.6 \\ \hline
+  188 & 163 & Trachiniae & trophos & 5.6 \\ \hline
+  30 & 164 & Libation Bearers & elektra & 5.6 \\ \hline
+  226 & 165 & Electra & chrysothemis & 5.7 \\ \hline
+  183 & 166 & Trachiniae & angelos & 5.7 \\ \hline
+  210 & 167 & Oedipus at Colonus & ismene & 5.7 \\ \hline
+  234 & 168 & Antigone & haimon & 5.7 \\ \hline
+  159 & 169 & Hecuba & therapaina & 5.7 \\ \hline
+  235 & 170 & Antigone & teiresias & 5.8 \\ \hline
+  169 & 171 & Electra & dioskoyroi & 5.8 \\ \hline
+  70 & 172 & Suppliants & athena & 5.8 \\ \hline
+  213 & 173 & Oedipus at Colonus & polyneikes & 5.8 \\ \hline
+  66 & 174 & Suppliants & angelos & 5.8 \\ \hline
+  178 & 175 & Bacchae & agaue & 5.9 \\ \hline
+  74 & 176 & Rhesus & dolon & 5.9 \\ \hline
+  172 & 177 & Bacchae & teiresias & 5.9 \\ \hline
+  81 & 178 & Rhesus & alexandros & 6 \\ \hline
+  147 & 179 & Helen & graus & 6 \\ \hline
+  35 & 180 & Libation Bearers & pylades & 6.1 \\ \hline
+  42 & 181 & Eumenides & propompoi & 6.1 \\ \hline
+  114 & 182 & Iphigenia in Tauris & athena & 6.1 \\ \hline
+  201 & 183 & Oedipus Tyrannus & teiresias & 6.2 \\ \hline
+  53 & 184 & The Trojan Women & hemichorion a & 6.2 \\ \hline
+  33 & 185 & Libation Bearers & trophos & 6.3 \\ \hline
+  228 & 186 & Electra & aigisthos & 6.3 \\ \hline
+  244 & 187 & Ajax & angelos & 6.3 \\ \hline
+  68 & 188 & Suppliants & iphis & 6.4 \\ \hline
+  43 & 189 & Agamemnon & phylax & 6.4 \\ \hline
+  94 & 190 & Phoenissae & oidipous & 6.4 \\ \hline
+  149 & 191 & Helen & theonoe & 6.4 \\ \hline
+  236 & 192 & Antigone & angelos & 6.5 \\ \hline
+  124 & 193 & Iphigenia in Aulis & angelos & 6.5 \\ \hline
+  130 & 194 & Ion & presbytes & 6.5 \\ \hline
+  96 & 195 & Orestes & helene & 6.5 \\ \hline
+  14 & 196 & Seven Against Thebes & ismene & 6.5 \\ \hline
+  205 & 197 & Oedipus Tyrannus & exangelos & 6.6 \\ \hline
+  76 & 198 & Rhesus & angelos & 6.6 \\ \hline
+  54 & 199 & The Trojan Women & hemichorion b & 6.7 \\ \hline
+  83 & 200 & Rhesus & mousa & 6.7 \\ \hline
+  204 & 201 & Oedipus Tyrannus & therapon & 6.7 \\ \hline
+  187 & 202 & Trachiniae & hemichorion & 6.7 \\ \hline
+  185 & 203 & Trachiniae & hemichorion 1 & 6.7 \\ \hline
+  245 & 204 & Ajax & hemichorion 1 & 6.7 \\ \hline
+  100 & 205 & Orestes & tyndareos & 6.8 \\ \hline
+  140 & 206 & Heracles & lyssa & 6.8 \\ \hline
+  238 & 207 & Antigone & exangelos & 6.9 \\ \hline
+  111 & 208 & Iphigenia in Tauris & boukolos & 6.9 \\ \hline
+  67 & 209 & Suppliants & euadne & 6.9 \\ \hline
+  73 & 210 & Rhesus & aineias & 7 \\ \hline
+  158 & 211 & Hecuba & talthybios & 7 \\ \hline
+  167 & 212 & Electra & angelos & 7.1 \\ \hline
+  246 & 213 & Ajax & hemichorion 2 & 7.1 \\ \hline
+  139 & 214 & Heracles & iris & 7.2 \\ \hline
+  91 & 215 & Phoenissae & teiresias & 7.3 \\ \hline
+  118 & 216 & Iphigenia in Aulis & menelaos & 7.4 \\ \hline
+  208 & 217 & Oedipus at Colonus & xenos & 7.4 \\ \hline
+  175 & 218 & Bacchae & therapon & 7.4 \\ \hline
+  198 & 219 & Oedipus Tyrannus & hiereus & 7.4 \\ \hline
+  186 & 220 & Trachiniae & hemichorion 2 & 7.4 \\ \hline
+  104 & 221 & Orestes & ermione & 7.4 \\ \hline
+  88 & 222 & Phoenissae & polyneikes & 7.5 \\ \hline
+  239 & 223 & Ajax & athena & 7.6 \\ \hline
+  237 & 224 & Antigone & eurydike & 7.6 \\ \hline
+  141 & 225 & Heracles & angelos & 7.7 \\ \hline
+  151 & 226 & Helen & therapon & 7.7 \\ \hline
+  152 & 227 & Helen & dioskoroi & 7.7 \\ \hline
+  248 & 228 & Ajax & menelaos & 7.8 \\ \hline
+  125 & 229 & Ion & hermes & 7.8 \\ \hline
+  50 & 230 & The Trojan Women & poseidon & 7.9 \\ \hline
+  119 & 231 & Iphigenia in Aulis & angelos a & 7.9 \\ \hline
+  177 & 232 & Bacchae & angelos b & 7.9 \\ \hline
+  214 & 233 & Oedipus at Colonus & angelos & 8 \\ \hline
+  153 & 234 & Hecuba & polydorou eidolon & 8 \\ \hline
+  120 & 235 & Iphigenia in Aulis & xorosandronargeion & 8.2 \\ \hline
+  75 & 236 & Rhesus & angelos poimen & 8.3 \\ \hline
+  51 & 237 & The Trojan Women & athena & 8.3 \\ \hline
+  249 & 238 & Ajax & agamemnon & 8.4 \\ \hline
+  144 & 239 & Helen & teukros & 8.4 \\ \hline
+  106 & 240 & Orestes & apollon & 8.5 \\ \hline
+  92 & 241 & Phoenissae & menoikeus & 8.6 \\ \hline
+  105 & 242 & Orestes & phryx & 8.6 \\ \hline
+  69 & 243 & Suppliants & paides & 8.7 \\ \hline
+  189 & 244 & Trachiniae & presbys & 9.1 \\ \hline
+  102 & 245 & Orestes & angelos & 9.4 \\ \hline
+  180 & 246 & Trachiniae & therapaina & 9.4 \\ \hline
+  77 & 247 & Rhesus & resos & 9.6 \\ \hline
+  85 & 248 & Phoenissae & paidagogos & 9.7 \\ \hline
+  103 & 249 & Orestes & hemichoros & 9.7 \\ \hline
+\end{longtable}
+
+\section{Declaration on Generative AI}
+
+The author has not employed any Generative AI tools.
+
+\bibliography{zotero-refs}
+
+\end{document}
