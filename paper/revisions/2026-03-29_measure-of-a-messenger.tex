@@ -159,33 +159,32 @@ Pseudo-Longinus, is said to animate the off-stage events that news-bringers
 narrate. Irene J. F. de Jong has perhaps most famously applied a narratological
 lens to both Homer and tragic messengers, followed a few years later by Barbara
 Goward and James Barrett with their own seminal works on messenger speeches in
-2002 \cite{deJong2011, deJong1991, Goward1999, Barrett2002}. Although Irene J.
-F. de Jong championed the view that messengers are not featureless
-conduits for the dramatist's voice but are instead focalizers with bias
-and selective memory, James Barrett then qualified this view by noting
-that messengers' narrative effectiveness is inversely proportional to
-their stage presence: ``The messenger's own body,'' he writes, ``is
-implicitly—and explicitly, on occasion—a hindrance, inasmuch as his
-success as a messenger depends upon his acquiring the invulnerability
-granted by freedom from bodily constraints'' \cite[100]{Barrett2002}. More
-recently, Margaret Dickin showed how the roles of messengers in tragedy
-increased over time and became ``vehicles for star-power,'' while others,
-like Felix Budelmann and Evert van Emde Boas, explored how messengers
-direct the audience's affective energies \cite{Dickin2009,
-Budelmann.vanEmdeBoas2020}. Florence Yoon's interventions have further
-disrupted the ``category'' of messengers by revealing the mistakes of
-painting with too broad a brush: \textit{angeloi}, messengers proper, and
-\textit{kerykes}, ``heralds,'' perform different functions in tragedy
-\cite{Yoon2022}.
+2002 \cite{deJong2011, deJong1991, Goward1999, Barrett2002}. De Jong championed
+the view that messengers are not featureless conduits for the dramatist's
+voice but are instead focalizers with bias and selective memory. James
+Barrett then qualified this view by noting that messengers' narrative
+effectiveness is inversely proportional to their stage presence: ``The
+messenger's own body,'' he writes, ``is implicitly—and explicitly, on
+occasion—a hindrance, inasmuch as his success as a messenger depends upon
+his acquiring the invulnerability granted by freedom from bodily
+constraints'' \cite[100]{Barrett2002}. More recently, Margaret Dickin
+showed how the roles of messengers in tragedy increased over time and
+became ``vehicles for star-power,'' while others, like Felix Budelmann and
+Evert van Emde Boas, explored how messengers direct the audience's
+affective energies \cite{Dickin2009, Budelmann.vanEmdeBoas2020}. Florence
+Yoon's interventions have further disrupted the ``category'' of messengers
+by revealing the mistakes of painting with too broad a brush:
+\textit{angeloi}, messengers proper, and \textit{kerykes}, ``heralds,''
+perform different functions in tragedy \cite{Yoon2022}.
 
 The chief difficulty running through much of the literature on messenger
 speeches has to do with defining who, precisely, is a
 news-bringer\footnote{Along with ἄγγελοι, ``messengers,'' I also count κήρυκες,
   ``heralds,'' and various other unnamed deliverers of information. As I hope
   to show, however, the distinction between this class of characters and the
-named royalty that populates tragedy is artificial at best.} and what,
-precisely, is a messenger speech. Part of the difficulty arises from the fact
-that named characters at times appear to deliver speeches that resemble
+named royalty and choruses who populate tragedy is artificial at best.} and
+what, precisely, is a messenger speech. Part of the difficulty arises from the
+fact that named characters at times appear to deliver speeches that resemble
 messenger speeches: nearly every named character in Sophocles'
 \textit{Trachiniae} does so, as Sir Richard Jebb noted over a century ago
 \cite{Jebb1902}; and even Clytaemestra's famous "Beacon Speech" in Aeschylus'
@@ -210,17 +209,85 @@ Monika Dabrowska; or the early work on social network theory and Greek tragedy
 by Jeff Rydberg-Cox \cite{Beine.etal2024, Fernandez.Dabrowska2023,
 Rydberg-Cox2011}.
 
-In this paper, I attempt to start some discussions about the
-quantifiable natures of news-bringers and their speeches in ancient
-tragedy. Everything that I write here should be understood as
-experimental and preliminary---there is a surprising amount of ground
-to cover. At the same time, I hope that by exploring the ways that we
-can measure a character's ``messenger-type-ness,'' or the extent to
-which they perform a ``messenger function'' (to borrow a term from C.
-W. Marshall \cite{Marshall2006}), we can shed new light on this
-often-misunderstood class of dramatic actors and thus better
-understand how they reflect their culture's relationship to
-secondhand information.
+In this paper, I undertake three quantitative approaches to news-bringers in
+tragedy, with a focus on whether they exhibit more epic features than other
+tragic classes of characters. By ``epic features'' I mean three specific
+phenomena: (1) \textbf{several measures of correlation and clustering with
+speeches from the Homeric corpus} (obtained using the DICES API) and trimeters
+in tragedy; (2) \textbf{the placement of resolutions in characters' trimeters},
+which has not, to my knowledge, been used as a way to distinguish between
+classes of speakers, although the \textit{frequency} of resolution has been
+used for dating the plays of Euripides and Sophocles; and (3) a corollary of
+resolutions, \textbf{the number of dactyls per line of a character's trimeter},
+by way of exploring the hypothesis that such ``dactylic events'' lend a line
+more epic character. The first experiment is necessarily sensitive to
+meter and dialect, even though it uses four-character-grams (sliding windows of
+four letters) to cut across syllables. Nevertheless, the stability of the
+clusters and the most frequent 4-grams for each cluster suggest that the
+Homeric \textit{Kunstsprache} and epic hexameters affect the results less than
+we might expect.
+
+At the risk of discouraging the reader from continuing, all of the experiments
+turn up null results: the analyzed features are insufficient to distinguish
+messengers from other classes of tragic characters. Even when compared to epic,
+the tragic speeches cluster together within a larger Homeric cluster,
+suggesting that all tragic characters \textit{share} some relation to epic,
+rather than certain classes of characters being defined by their particular
+access to ``epic diction.'' Yet the reasons for this lack of differentation can
+still lead to a more nuanced understanding of the \textit{dramatic} place of
+messengers in tragedy, as opposed to their relegation to ``\textit{narrative}
+in drama.'' By exploring the ways that we can measure a character's
+``messenger-type-ness,'' or the extent to which they perform a ``messenger
+function'' (to borrow a term from C. W. Marshall \cite{Marshall2006}), we shed
+new light on this often-misunderstood class of dramatic actors and thus better
+understand how they reflect their culture's relationship to secondhand
+information.
+
+\section{Data preparation}
+
+Data were prepared using XML files from DraCor and the Perseus Project; line
+numbers corresponding to speeches in epic were identified using the DICES API.
+For determining scansion, a rules-based library was built in the Elixir
+programming language. Although the deviation from Python might seem unusual,
+Elixir has the benefit of platform stability---anecdotally, Python projects
+break approximately every six months, while I have been able to maintain
+Elixir-based experiments for nearly a decade without major interruption---
+as well as first-class support for multi-threaded and parallel computing,
+techniques that will be beneficial for larger corpora. The present corpus
+of tragedy and epic is small enough for the metrical analysis and experiments
+each to run on the order of seconds or minutes rather than hours, but this
+early programming-language decision will mean straightforward parallelization
+as/if the corpus grows.
+
+Experiments were run in Livebook, an Elixir-based corollary to
+Jupyter notebooks.
+The relevant Livebooks and supporting files are available upon request.
+
+For the sake of efficiency, the rules-based scansion parser was built
+with the assistance of Claude Code. The author verified the scansion
+results, and the author wrote all of the experiments and conducted the analysis
+without any AI assistance.
+
+The scansion parser first syllabifies a text and then parses line by line
+to determine whether the line can scan as valid iambic trimeter. Out of
+44,482 lines of tragedy in the corpus, 17,341 scanned as valid trimeters;
+81 were skipped due to parsing errors. The corpus of iambic trimeters
+represents less than 40\% of the lines of tragedy in the corpus,
+which restricts the kinds of experiments that will yield meaningful
+results. Accordingly, the discussion begins with the clustering experiments,
+which are the most sensitive to corpus size.
+
+\section{Epic clustering}
+
+\section{Resolution placement}
+
+First, a correlation test was conducted using Cramér's V\cite{Cramer2016},
+which calculates the strength of a relationship between two categorical
+variables, ranging from 0 (no correlation) to 1 (full correlation). In this
+case, the variables used were resolution position and character class (chorus,
+divine, herald, messenger, prophet, royalty, slave, or other).
+
+\section{Dactylic events}
 
 \section{Epic Style?}
 
