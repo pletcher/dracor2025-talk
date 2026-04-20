@@ -22,9 +22,8 @@
 %% auto break lines
 \lstset{breaklines=true}
 
-\usepackage{rotating}
 \usepackage{hyperref}
-\usepackage{longtable}
+\usepackage{svg}
 
 %%
 %% end of the preamble, start of the body of the document source.
@@ -271,8 +270,8 @@ line.\footnote{Caesurae were also analyzed as part of these experiments, but
 as with the other experiments, they showed no substantial correlation with
 speaker class.}
 
-At the risk of discouraging the reader from continuing, both experiments
-turn up null or nearly results, with extremely weak correlation at best: the
+At the risk of discouraging the reader from continuing, both experiments turn
+up null or nearly null results, with extremely weak correlation at best: the
 analyzed features are insufficient to distinguish messengers from other
 classes of tragic characters. Yet the reasons for this lack of differentation
 can still lead to a more nuanced understanding of the \textit{dramatic} place
@@ -291,7 +290,7 @@ For determining scansion, a rules-based library was built in the Elixir
 programming language. Although the deviation from Python might seem unusual,
 Elixir has the benefit of platform stability---anecdotally, Python projects
 break approximately every six months, while I have been able to maintain
-Elixir-based experiments for nearly a decade without major interruption--- as
+Elixir-based experiments for nearly a decade without major interruption---as
 well as first-class support for multi-threaded and parallel computing,
 techniques that will be beneficial for larger corpora. This early
 programming-language decision will mean straightforward parallelization as/if
@@ -325,11 +324,11 @@ about 57.17\% of the lines of tragedy in the corpus, matching the rough
 division between odes and episodes in most plays, which hovers around 60\%.
 
 For all of the experiments, each speaker was labeled with one of eight
-`speaker classes': (1) messenger, (2) herald, (3) chorus, (4) royalty,
-(5) divinity, (6) slave, (7) prophet, or (8) other. These labels were first
-applied automatically to unambiguous characters---all Ἄγγελοι were labeled
-`messenger,' for example. Subsequently, a list of ambiguous characters
-was generated and labeled by hand.
+`speaker classes':(1) chorus, (2) divine, (3) herald, (4) messenger,
+(5) other, (6) prophet,(7) royalty, and (8) slave (in alphabetical order).
+These labels were first applied automatically to unambiguous characters---all
+Ἄγγελοι were labeled `messenger,' for example. Subsequently, a list of
+ambiguous characters was generated and labeled by hand.
 
 The definition of messenger for the purposes of labeling was deliberately
 strict. Although, as noted above, the category of messenger-type speech has
@@ -460,61 +459,124 @@ extant plays.
 
 Below are visualized the relative frequencies of resolution by position and by
 tragedian. The breakdown by tragedian is necessary because of the state of
-the extant corpus: 19 (counting, perhaps contraversially, \textit
-{Rhesus}) of Euripides' plays survive, compared to 7 each for Aeschylus and
-Sophocles (7.5 for Sophocles if we count \textit{Trackers}). Relative frequencies
-are visualized both as a proportion of each speaker class's resolution placement
-and as a grouped bar chart across speaker classes.
+the extant corpus: 19 (counting, perhaps contraversially, \textit{Rhesus}) of
+Euripides' plays survive, compared to 7 each for Aeschylus and Sophocles,
+plus fragments from Sophocles' satyr play \textit{Trackers}. Although, as
+expected, Aeschylus and Sophocles use resolution less frequently than
+Euripides (relative to total lines written), the unbalanced representation in
+the corpuse leads to greater observed variability in the distribution of
+resolutions among the speaker classes---meaning, for example, that divinities
+appear to lead the relative frequency of resolutions in the sixth(5.7\%) and
+eighth (4.3\%) positions, yet there are only two speaking divinities present
+in Sophoclean trimeter: Athena in the prologue of \textit{Ajax} and
+Herakles \textit{ex machina} in \textit{Philoctetes}. Relative frequencies
+are visualized both as a proportion of each speaker class's resolution
+placement and as a grouped bar chart across speaker classes.
 
 
 \begin{center}
-\includegraphics[scale=0.5]{aeschylus-rel-freq.png}
-\captionof{figure}{Relative frequencies by resolution placement for Aeschylus}\label{fig:aeschylus-rel-freq}
+\captionof{figure}{Graphic of relative frequencies by resolution placement for Aeschylus}\label{fig:aeschylus-rel-freq}
+\includesvg{aeschylus-rel-freq}
 \end{center}
 
 \begin{center}
-\includegraphics[scale=0.5]{sophocles-rel-freq.png}
-\captionof{figure}{Relative frequencies by resolution placement for Sophocles}\label{fig:sophocles-rel-freq}
+\captionof{table}{Table of relative frequencies by resolution placement for Aeschylus}
+\begin{tabular}{c | c | c | c | c | c} \\
+\textbf{speaker class} & resolves at 02 & resolves at 04 & resolves at 06 & resolves at 08 & resolves at 10 \\
+chorus & 0.0197 & 0.0108 & 0.0394 & 0.0269 & 0.0161 \\
+divine & 0.0043 & 0.0021 & 0.0361 & 0.0096 & 0.0021 \\
+herald & 0.0063 & 0.0000 & 0.0438 & 0.0188 & 0.0000 \\
+messenger & 0.0081 & 0.0081 & 0.0569 & 0.0352 & 0.0081 \\
+other & 0.0160 & 0.0000 & 0.0080 & 0.0000 & 0.0080 \\
+royalty & 0.0120 & 0.0036 & 0.0455 & 0.0150 & 0.0006 \\
+slave & 0.0000 & 0.0000 & 0.0488 & 0.0000 & 0.0000 \\
+\textbf{std. dev.} & 0.0069 & 0.0043 & 0.0155 & 0.0132 & 0.0061 \\
+\end{tabular}
 \end{center}
 
 \begin{center}
-\includegraphics[scale=0.5]{euripides-rel-freq.png}
-\captionof{figure}{Relative frequencies by resolution placement for Euripides}\label{fig:euripides-rel-freq}
+\captionof{figure}{Graphic of frequencies by resolution placement for Sophocles}\label{fig:sophocles-rel-freq}
+\includesvg{sophocles-rel-freq}
 \end{center}
 
-As is readily visible in these figures, resolution count varies significantly
-by dramatist, with Euripides' maximum relative frequency (11.9\% for
-prophets) more than doubling the maxima of Sophocles (5.7\% for divinities)
-and Aeschylus (5.7\% for messengers). Aeschylus and Sophocles exhibit more
-variable resolution placement among speaker classes than Euripides, but this
-observation is likely due to the smaller sample size for these tragedians:
-the data include Aeschylus' 7 canonical plays (including \textit
-{Prometheus Bound}) and Sophocles' 7 plays and the substantial fragments of
-his satyr play (\textit{Trackers}); but the data also include all 17 of
-Euripides' tragedies and 2 of his satyr plays(\textit{Cyclops} and \textit
-{Alcestis}), meaning that we have significantly more information for his
-plays than for the plays of the other two tragedians. The marked differences
-in distributions between the three tragedians' resolution placements supports
-separating our analyses; but at the same time, the smaller sample sizes for
-Aeschylus and Sophocles limit our ability to draw inferences from the
-resolution distributions.
+\begin{center}
+\captionof{table}{Table of relative frequencies by resolution placement for Sophocles}
+\begin{tabular}{c | c | c | c | c | c} \\
+\textbf{speaker class} & resolves at 02 & resolves at 04 & resolves at 06 & resolves at 08 & resolves at 10 \\
+chorus & 0.0447 & 0.0419 & 0.0559 & 0.0279 & 0.0168 \\
+divine & 0.0000 & 0.0000 & 0.0571 & 0.0429 & 0.0000 \\
+herald & 0.0000 & 0.0000 & 0.0100 & 0.0000 & 0.0100 \\
+messenger & 0.0117 & 0.0067 & 0.0417 & 0.0150 & 0.0017 \\
+other & 0.0086 & 0.0172 & 0.0086 & 0.0086 & 0.0000 \\
+prophet & 0.0244 & 0.0000 & 0.0163 & 0.0163 & 0.0000 \\
+royalty & 0.0151 & 0.0075 & 0.0273 & 0.0101 & 0.0019 \\
+slave & 0.0090 & 0.0045 & 0.0495 & 0.0090 & 0.0000 \\
+\textbf{std. dev.} & 0.0146 & 0.0142 & 0.0203 & 0.0134 & 0.0062 \\
+\end{tabular}
+\end{center}
 
+\begin{center}
+\captionof{figure}{Graphic of relative frequencies by resolution placement for Euripides}\label{fig:euripides-rel-freq}
+\includesvg{euripides-rel-freq}
+\end{center}
+
+\begin{center}
+\captionof{table}{Table of relative frequencies by resolution placement for Euripides}
+\begin{tabular}{c | c | c | c | c | c} \\
+\textbf{speaker class} & resolves at 02 & resolves at 04 & resolves at 06 & resolves at 08 & resolves at 10 \\
+chorus & 0.0455 & 0.0416 & 0.0754 & 0.0247 & 0.0195 \\
+divine & 0.0524 & 0.0437 & 0.0983 & 0.0295 & 0.0022 \\
+herald & 0.0134 & 0.0134 & 0.0635 & 0.0234 & 0.0033 \\
+messenger & 0.0369 & 0.0328 & 0.0990 & 0.0411 & 0.0021 \\
+other & 0.0479 & 0.0342 & 0.0889 & 0.0368 & 0.0068 \\
+prophet & 0.1013 & 0.0661 & 0.1189 & 0.0573 & 0.0176 \\
+royalty & 0.0417 & 0.0335 & 0.0972 & 0.0309 & 0.0046 \\
+slave & 0.0190 & 0.0254 & 0.0444 & 0.0143 & 0.0000 \\
+\textbf{std. dev.} & 0.0267 & 0.0153 & 0.0235 & 0.0130 & 0.0074 \\
+\end{tabular}
+\end{center}
+
+As is readily visible in these figures, relative resolution count varies
+significantly by dramatist, with Euripides' maximum relative frequency
+(11.9\% for prophets) more than doubling the maxima of Sophocles (5.7\% for
+divinities) and Aeschylus (5.7\% for messengers). Aeschylus and Sophocles
+exhibit more variable resolution placement among speaker classes than
+Euripides, but this observation is likely due to the smaller sample size for
+these tragedians: the data include Aeschylus' 7 canonical plays
+(including \textit{Prometheus Bound}) and Sophocles' 7 plays and the
+substantial fragments of the satyr play (\textit{Trackers}); but the data
+also include all 17 of Euripides' tragedies and 2 of his satyr plays(\textit
+{Cyclops} and \textit{Alcestis}), meaning that we have significantly more
+information for his plays than for the plays of the other two tragedians. The
+marked differences in distributions between the three tragedians' resolution
+placements supports separating our analyses; but at the same time, the
+smaller sample sizes for Aeschylus and Sophocles limit our ability to draw
+inferences from the resolution distributions.
 
 
 \section{Discussion}
 
 
 These experiments show that there \textit{are} detectable metrical differences
-among speaker classes in tragedy, perhaps especially among messengers.
-However, these experiments also point up the impossibility of making
-meaningful classifications based on the available data: we could not for
-instance, take an unassigned line from the tragic fragments and determine
-whether it was a messenger's or not. These null quantitative results should
-not be understood as contradicting the more literary analyses of de Jong and
-others. This paper's results only suggest that meter fails as a
-distinguishing feature of messenger-type speech; but other features, such as
-lexis and syntax, might still reveal key differences between messengers and
-other types of characters.
+among speaker classes in tragedy, perhaps especially among messengers in
+Euripides, where resolutions at positions 6 and 8 are relatively frequent
+while resolutions in position 10 are almost entirely avoided. Compare this
+distribution to the distribution of resolutions in the Euripidean chorus, who
+use resolutions much more frequently throughout their trimeters.(Note, again,
+that these experiments do not look at the chorus' lyric metres.) However,
+these experiments also point up the impossibility of making meaningful
+classifications based on the available data: we could not for instance, take
+an unassigned line from the tragic fragments and determine whether it was a
+messenger's or not. Even in experiments where we limited speaker classes to
+`messenger' and `non-messenger,' classification algorithms achieved greater
+than 90\% accuracy simply by labeling every line as `non-messenger,' because
+messengers \textit{strictu sensu} generally speak fewer than 10\% of the
+lines in a a given tragedy. These null quantitative results should not be
+understood as contradicting the more literary analyses of de Jong and others.
+This paper's results only suggest that meter fails as a distinguishing
+feature of messenger-type speech; but other features, such as lexis and
+syntax, might still reveal key differences between messengers and other types
+of characters.
 
 These differences matter because messengers model how audiences understand,
 interpret, and evaulate second-hand news and the people who bring it to them.

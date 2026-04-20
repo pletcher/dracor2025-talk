@@ -1,0 +1,109 @@
+%% Creator: Inkscape 1.4.3 (0d15f75, 2025-12-25), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'aeschylus-rel-freq_svg-tex.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{419.25bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.9391771)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.14771275,0.50357782){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}chorus\end{tabular}}}}%
+    \put(0.24993611,0.50357782){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}divine\end{tabular}}}}%
+    \put(0.35215946,0.50357782){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}herald\end{tabular}}}}%
+    \put(0.45438283,0.50357782){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}messenger\end{tabular}}}}%
+    \put(0.55660619,0.50357782){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}other\end{tabular}}}}%
+    \put(0.65882953,0.50357782){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}royalty\end{tabular}}}}%
+    \put(0.7610529,0.50357782){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}slave\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.45527728,0.47674419){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{speaker class}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.08497317,0.52504472){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}0\%\end{tabular}}}}%
+    \put(0.08497317,0.59660107){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}20\%\end{tabular}}}}%
+    \put(0.08497317,0.66815742){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}40\%\end{tabular}}}}%
+    \put(0.08497317,0.73971377){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}60\%\end{tabular}}}}%
+    \put(0.08497317,0.81127013){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}80\%\end{tabular}}}}%
+    \put(0.08497317,0.88282648){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}100\%\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.02848628,0.70930233){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{relative frequency}\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.15623136,0.04025045){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}chorus\end{tabular}}}}%
+    \put(0.25561519,0.04025045){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}divine\end{tabular}}}}%
+    \put(0.354999,0.04025045){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}herald\end{tabular}}}}%
+    \put(0.45438283,0.04025045){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}messenger\end{tabular}}}}%
+    \put(0.55376665,0.04025045){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}other\end{tabular}}}}%
+    \put(0.65315047,0.04025045){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}royalty\end{tabular}}}}%
+    \put(0.75253429,0.04025045){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}slave\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.45527728,0.01341682){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{speaker class}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.08497317,0.06171735){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}0.00\end{tabular}}}}%
+    \put(0.08497317,0.12134764){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}0.01\end{tabular}}}}%
+    \put(0.08497317,0.18097794){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}0.02\end{tabular}}}}%
+    \put(0.08497317,0.24060823){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}0.03\end{tabular}}}}%
+    \put(0.08497317,0.30023852){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}0.04\end{tabular}}}}%
+    \put(0.08497317,0.35986881){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}0.05\end{tabular}}}}%
+    \put(0.08497317,0.41949911){\color[rgb]{0,0,0}\makebox(0,0)[rt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}0.06\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.03942238,0.24597496){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\textbf{relative frequency}\end{tabular}}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.87477639,0.84436494){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}resolves at 02\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.87477639,0.82110912){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}resolves at 04\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.87477639,0.79785331){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}resolves at 06\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.87477639,0.7745975){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}resolves at 08\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.87477639,0.75134168){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}resolves at 10\end{tabular}}}}%
+    \put(0.84615385,0.87298748){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{resolution}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{aeschylus-rel-freq_svg-tex.pdf}}%
+    \put(0.00970273,0.91234347){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{Overview of resolution placement by speaker class in Aeschylus}\end{tabular}}}}%
+  \end{picture}%
+\endgroup%
