@@ -12,6 +12,9 @@
 %% One can fix some overfulls
 \sloppy
 
+
+\usepackage{caption}
+
 %%
 %% Minted listings support
 %% Need pygment <http://pygments.org/> <http://pypi.python.org/pypi/Pygments>
@@ -27,6 +30,8 @@
 %% end of the preamble, start of the body of the document source.
 \begin{document}
 
+\graphicspath{{./graphics}}
+
 %%
 %% Rights management information.
 %% CC-BY is default license.
@@ -35,15 +40,12 @@
   Use permitted under Creative Commons License Attribution 4.0
 International (CC BY 4.0).}
 
-%%
-%% This command is for the conference information
+
 \conference{Workshop on Computational Drama Analysis, 3 September
 2025, Berlin, DE}
 
-%%
-%% The "title" command
-\title{The Measure of a Messenger: Meter and lexis as potential avenues
-of differentiation}
+\title{The Measure of a Messenger: Meter as potential avenue of
+ differentiation}
 
 %%
 %% The "author" command and its associated commands are used to define
@@ -63,19 +65,18 @@ Upper Campus Road, Medford, Massachusetts 02155, United States}
 %%
 %% The abstract is a short summary of the work to be presented in the
 %% article.
-\begin{abstract}
-  This paper argues that messenger speeches (\textit{Botenberichte})
-  in the ancient tragedies of Aeschylus, Sophocles, and Euripides
-  have not received the computational attention that they deserve. I
-  first draw attention to this gap by surveying traditional literary
-  approaches to the genre, showing how the definition of ``messenger
-  speech'' is already problematic from a qualitative perspective.
-  Next, I present a series of initial inquiries into quantitative and
-  computational approaches to messenger speeches, beginning with a
-  stylometric comparison to Homeric epic and proceeding through topic
-  modeling and, using the editions prepared by DraCor, network
-  analysis. In conclusion, I offer a brief discussion of these
-  preliminary findings and potential avenues for further inquiry.
+\begin{abstract} This paper searches for a metrical definition of
+ messenger-type speech by way of arguing that such speeches (\textit
+ {Botenberichte}) in the ancient tragedies of Aeschylus, Sophocles, and
+ Euripides have not received the computational attention that they deserve,
+ but also that such attention is impossible given the current dearth of data
+ for Ancient Greek tragedy. I first draw attention to this gap by surveying
+ traditional literary approaches to the genre, showing how the definition of
+ `messenger speech' is already problematic from a qualitative perspective.
+ Next, I present two quantitative approaches to the meter of messenger speeches,
+ neither of which manages to identify any distinguishing characteristics. In
+ conclusion, I offer a brief discussion of these preliminary findings and
+ potential avenues for further inquiry.
 \end{abstract}
 
 %%
@@ -84,9 +85,8 @@ Upper Campus Road, Medford, Massachusetts 02155, United States}
 \begin{keywords}
   tragedy \sep
   messenger speeches \sep
-  Homer \sep
-  topic modeling \sep
-  network theory
+  iambic trimeter \sep
+  metrical resolution
 \end{keywords}
 
 %%
@@ -96,12 +96,26 @@ Upper Campus Road, Medford, Massachusetts 02155, United States}
 
 \section{Introduction}
 
+This paper asks whether we can detect a `metrical signature' for messengers'
+speeches\footnote{Throughout this paper, I use `messenger-type speech' to refer to
+the category of speeches under investigation. But `messenger' describes a heterogenous
+class of individuals who do not necessarily conform to a single role or character type.
+I thus also use the term `news-bringer' when I mean to include characters who deliver
+news but who are not generally considered `messengers.' Further, the analyses in this paper
+} in ancient Athenian tragedy. It pursues this line of inquiry through
+quantitative analyses of the meter in the three canonical tragedians
+(Aeschylus, Sophocles, and Euripides). In so doing, this paper sheds new
+light on questions that have previously been addressed mainly from
+qualitative angles, challenging the prevailing view that we can easily
+distinguish messenger-type speech from other iambic trimeters (the main
+spoken meter of tragedy).
+
 In the first pages of \textit{Narrative in Drama: The Art of the Euripidean
 Messenger-Speech}, Irene J. F. de Jong offers the following definition of
-(Euripidean) messenger-speeches: ``The Euripidean messenger-speech or ἀγγελικὴ
+(Euripidean) messenger-speeches: `The Euripidean messenger-speech or ἀγγελικὴ
 ῥῆσις is a long, continuous speech in which a messenger reports events that
 have taken place off-stage. The content of this speech is a narrative, more
-particularly a first-person narrative…'' \cite[1–2]{deJong1991}. She goes on to
+particularly a first-person narrative…' \cite[1–2]{deJong1991}. She goes on to
 argue that Euripides makes signficantly greater use of first-person narrative
 than Sophocles and Aeschylus, citing \cite[2 n. 4]{deJong1991}
 
@@ -120,17 +134,17 @@ at, for example, the Tutor's speech in Sophocles' \textit{Electra} (680–763)
 casts enough doubt on de Jong's criteria that it raises further questions about
 not only Euripidean messenger-speech exceptionalism but messenger-speech as a
 category in its own right. \footnote{The Tutor's speech is rightly considered
-  an exemplary ``messenger-type speech'' in its own right (so
+  an exemplary `messenger-type speech' in its own right (so
   \cite{Marshall2006} and \cite{Kells1973}, among others), and it is largely
   for this reason that its apparent violation of Euripidean messenger-speech
-exceptionalism raises other questions.} In this paper, I present three
+exceptionalism raises other questions.} In this paper, I present two
 computational null results that cast further doubt on messengers'
 exceptionalism. By showing how ordinary messengers' speeches are, I mean both
 to highlight their dramatic---as opposed to narrative---place and to
 demonstrate how their performances contribute to tragedy's dramatic
-negotiations for truth.\footnote{I use ``messenger-speech'' when referring to
-  de Jong's concept, and ``messenger's speech,'' ``messengers' speeches,'' or
-  ``messenger-type speech'' when referring to the general category of dramatic
+negotiations for truth.\footnote{I use `messenger-speech' when referring to
+  de Jong's concept, and `messenger's speech,' `messengers' speeches,' or
+  `messenger-type speech' when referring to the general category of dramatic
 monologue.}
 
 The paper begins with a brief and necessarily incomplete overview of the
@@ -148,38 +162,38 @@ iambic trimeter in tragedy with all of the speeches from the Homeric corpus,
 obtained through the Digital Initiative for Classics: Epic Speeches (DICES)
 API. These experiments and their results are far from exhaustive, but they
 offer a new way of understanding the place of messengers in drama---a place,
-moreover, that appears no less ``dramatic'' than their traditionally less
-``narrative'' peers.
+moreover, that appears no less `dramatic' than their traditionally less
+`narrative' peers.
 
 \section{A brief history of \textit{Botenberichte}}
 
-The usual history of (so-called) ``messenger speeches'' in drama begins with
+The usual history of (so-called) `messenger speeches' in drama begins with
 Homer: the ancient bard's narrative \textit{enargeia}, to borrow a term from
 Pseudo-Longinus, is said to animate the off-stage events that news-bringers
-narrate. Irene J. F. de Jong has perhaps most famously applied a narratological
-lens to both Homer and tragic messengers, followed a few years later by Barbara
-Goward and James Barrett with their own seminal works on messenger speeches in
-2002 \cite{deJong2011, deJong1991, Goward1999, Barrett2002}. De Jong championed
-the view that messengers are not featureless conduits for the dramatist's
-voice but are instead focalizers with bias and selective memory. James
+narrate. De Jong has perhaps most famously applied a narratological lens to
+both Homer and tragic messengers, followed a few years later by Barbara
+Goward and James Barrett with their own seminal works on messenger speeches
+in 2002 \cite{deJong2011, deJong1991, Goward1999, Barrett2002}. De Jong
+championed the view that messengers are not featureless conduits for the
+dramatist's voice but are instead focalizers with bias and selective memory.
 Barrett then qualified this view by noting that messengers' narrative
-effectiveness is inversely proportional to their stage presence: ``The
-messenger's own body,'' he writes, ``is implicitly—and explicitly, on
-occasion—a hindrance, inasmuch as his success as a messenger depends upon
-his acquiring the invulnerability granted by freedom from bodily
-constraints'' \cite[100]{Barrett2002}. More recently, Margaret Dickin
-showed how the roles of messengers in tragedy increased over time and
-became ``vehicles for star-power,'' while others, like Felix Budelmann and
-Evert van Emde Boas, explored how messengers direct the audience's
-affective energies \cite{Dickin2009, Budelmann.vanEmdeBoas2020}. Florence
-Yoon's interventions have further disrupted the ``category'' of messengers
-by revealing the mistakes of painting with too broad a brush:
-\textit{angeloi}, messengers proper, and \textit{kerykes}, ``heralds,''
+effectiveness is inversely proportional to their stage presence: `The
+messenger's own body,' he writes, `is implicitly—and explicitly, on
+occasion—a hindrance, inasmuch as his success as a messenger depends upon his
+acquiring the invulnerability granted by freedom from bodily
+constraints' \cite[100]{Barrett2002}. More recently, Margaret Dickin showed
+how the roles of messengers in tragedy increased over time and became
+`vehicles for star-power,' while others, like Felix Budelmann and Evert van
+Emde Boas, explored how messengers direct the audience's affective
+energies \cite{Dickin2009, Budelmann.vanEmdeBoas2020}. Florence Yoon's
+interventions have further disrupted the `category' of messengers by
+revealing the mistakes of painting with too broad a brush:
+\textit{angeloi}, messengers proper, and \textit{kerykes}, `heralds,'
 perform different functions in tragedy \cite{Yoon2022}.
 
 The chief difficulty running through much of the literature on messenger
 speeches has to do with defining who, precisely, is a news-bringer\footnote
-{Along with ἄγγελοι, ``messengers,'' I also count κήρυκες, ``heralds,'' and
+{Along with ἄγγελοι, `messengers,' I also count κήρυκες, `heralds,' and
 various other unnamed deliverers of information. For the purposes of the
 computational studies that follow, however, I divide these speakers into
 different classes, described below. As I hope to show, any metrical
@@ -190,50 +204,51 @@ speeches that resemble messenger speeches: nearly every named character in
 Sophocles'
 \textit{Trachiniae} does so, as Sir Richard Jebb noted over a century ago
 \cite{Jebb1902}; and even Clytaemestra's famous "Beacon Speech" in Aeschylus'
-\textit{Agamemnon} has resembles speeches of news-bringers in its
+\textit{Agamemnon} resembles speeches of news-bringers in its
 subject-matter. Thus, some scholars insist on anonymity as a prime criterion
 for the deliverer of a messenger speech, but such an insistance runs the risk
-of obscuring the similarities that so-called ``messenger speeches'' have with
+of obscuring the similarities that so-called `messenger speeches' have with
 respect to other monologues in drama. These similarities matter, I argue,
 because they highlight the various strategies that drama uses to interrogate
 the fraught and problematic delivery of information that the recipients cannot
 verify. The tragedians, to state the matter bluntly, offer some of the earliest
-extended encounters with ``fake news.''
+extended encounters with `fake news.'
 
-Yet despite the steady stream of innovative approaches to messenger speeches in
-tragedy, there have been few attempts to address the various classes of
-news-bringers from a computational angle. Where such examinations have
-occurred, they have, to my knowledge, taken place in the context of broader
-computational studies of drama, such as the work of Julia Jennifer Beine, Frank
-Fischer, and Viktor Illmer presented at the Digital Humanities Conference in
-2024; the examination of the chorus by María Teresa Santa María Fernández and
-Monika Dabrowska; or the early work on social network theory and Greek tragedy
-by Jeff Rydberg-Cox \cite{Beine.etal2024, Fernandez.Dabrowska2023,
-Rydberg-Cox2011}.
+Yet despite the steady stream of innovative approaches to messenger speeches
+in tragedy, and despite Simon Perris' call for a `usable, robust, formal
+working definition' of messenger speech, no clear qualitative definition has
+emerged.\cite{Perris2011} On the quantitative side, there have been few
+attempts to address the various classes of news-bringers from a computational
+angle. Where such examinations have occurred, they have, to my knowledge,
+taken place in the context of broader computational studies of drama, such as
+the work of Julia Jennifer Beine, Frank Fischer, and Viktor Illmer presented
+at the Digital Humanities Conference in 2024; the examination of the chorus
+by María Teresa Santa María Fernández and Monika Dabrowska; or the early work
+on social network theory and Greek tragedy by Jeff Rydberg-Cox \cite
+{Beine.etal2024, Fernandez.Dabrowska2023, Rydberg-Cox2011}.
 
-In this paper, I undertake three quantitative approaches to meter in tragedy,
+In this paper, I undertake two quantitative approaches to meter in tragedy,
 with a focus on whether messengers and their ilk exhibit a discernible
 metrical signature by which they might be differentiated from other speakers.
-I investigate three specific phenomena: (1) \textbf{the number of resolutions
-per line of iambic trimeter}, that is, the number of times that a single long
-syllable in an iamb is replaced by two short syllables; (2) \textbf
+I investigate two specific phenomena: (1) \textbf{the number of resolutions
+per line of each character's speech}, that is, the number of times that a single long
+syllable in an iamb is replaced by two short syllables; and (2) \textbf
 {the placement of resolutions in characters' trimeters}, which has not, to my
 knowledge, been used as a way to distinguish between classes of speakers,
 although the \textit{frequency} of resolution has been used for dating the
-plays of Euripides and Sophocles; and (3) a corollary of resolutions, \textbf
-{the number of dactyls per line of a character's trimeter}, by way of
-exploring the hypothesis that such ``dactylic events'' lend a line more epic
-character.
+plays of Euripides and Sophocles.\footnote{Caesurae were also analyzed
+as part of these experiments, but as with the other experiments, they showed
+no substantial correlation with speaker class.}
 
-At the risk of discouraging the reader from continuing, all of the experiments
-turn up null results, with extremely weak correlation co-efficients at best:
-the analyzed features are insufficient to distinguish messengers from other
+At the risk of discouraging the reader from continuing, both experiments
+turn up null or nearly results, with extremely weak correlation at best: the
+analyzed features are insufficient to distinguish messengers from other
 classes of tragic characters. Yet the reasons for this lack of differentation
 can still lead to a more nuanced understanding of the \textit{dramatic} place
-of messengers in tragedy, as opposed to their relegation to ``\textit
-{narrative} in drama.'' By exploring the ways that we can measure a
-character's ``messenger-type-ness,'' or the extent to which they perform a
-``messenger function'' (to borrow a term from C. W. Marshall \cite
+of messengers in tragedy, as opposed to their relegation to `\textit
+{narrative} in drama.' By exploring the ways that we can measure a
+character's `messenger-type-ness,' or the extent to which they perform a
+`messenger function' (to borrow a term from C. W. Marshall \cite
 {Marshall2006}), we shed new light on this often-misunderstood class of
 dramatic actors and thus better understand how they reflect their culture's
 relationship to secondhand information.
@@ -256,50 +271,78 @@ processing scripts to output their own scansion analysis.
 
 Experiments were run in Livebook, an Elixir-based corollary to Jupyter
 notebooks. The relevant Livebooks and supporting files are available upon
-request. (They are not currently hosted on GitHub and so cannot be anonymized.)
+request. (They are currently hosted on a platform other than GitHub and so
+cannot be anonymized.)
 
-For the sake of efficiency, the rules-based scansion parser was built with the
-assistance of Claude Code. The author verified the scansion results, and the
-author wrote all of the experiments and conducted the analysis without AI
-assistance.
+For the sake of efficiency, the rules-based scansion parser was initially
+built with the assistance of Claude Code. While some of that code remains in
+the final implementation, the author found several major bugs that were
+leading to under-counting the number of trimeters in characters'
+speech---trimeter should make up about 60\% of tragic dialogue, but the
+`vibe-coded' implementation of the metrical analyser only captured 40\%.
+Thus, the author rewrote much of the code to fix these errors, and the
+library now reports valid trimeters as 57\% of lines scanned. The author
+verified the scansion results by examining key passages from each of the
+three playwrights, and the author wrote all of the experiments and conducted
+the analysis without AI assistance.
 
 The scansion parser first syllabifies a text and then parses line by line to
 determine whether the line can scan as valid iambic trimeter. Out of 44,482
-lines of tragedy in the corpus, 17,341 scanned as valid trimeters;
-81 were skipped due to parsing errors. The corpus of iambic trimeters
-represents less than 40\% of the lines of tragedy in the corpus, which
-restricts the kinds of experiments that will yield meaningful results.
+lines of tragedy in the corpus, 26,433 scan as valid trimeters; 81 were
+skipped due to parsing errors. The corpus of iambic trimeters thus represents
+about 57.17\% of the lines of tragedy in the corpus, matching the rough
+division between odes and episodes in most plays, which hovers around 60\%.
 
 For all of the experiments, each speaker was labeled with one of eight
-``speaker classes'': (1) messenger, (2) herald, (3) chorus, (4) royalty,
+`speaker classes': (1) messenger, (2) herald, (3) chorus, (4) royalty,
 (5) divinity, (6) slave, (7) prophet, or (8) other. These labels were first
 applied automatically to unambiguous characters---all Ἄγγελοι were labeled
-``messenger,'' for example. Subsequently, a list of ambiguous characters
+`messenger,' for example. Subsequently, a list of ambiguous characters
 was generated and labeled by hand.
+
+The definition of messenger for the purposes of labeling was deliberately
+strict. Although, as noted above, the category of messenger-type speech has
+notoriously fuzzy boundaries, the labeling for these experiments followed
+character naming conventions exclusively. We should note that this labeling
+method is still artificial: while we cannot know specifics about when line
+assignemnt labels entered the manuscript tradition, our earliest manuscripts
+include only paragraphoi to signal a change of speaker, but they do not label
+the speakers specifically.\footnote{See \cite
+{Mastronarde2016}.} Nevertheless, it seemed best to use what are now the
+canonical labels for speaker class, rather than to rely on necessarily
+subjective judgment while attempting to establish quantitative parameters for
+identifying messenger-type speech.
 
 \section{Parsing iambic trimeter}
 
-The rules-based parser works as follows (visualized also in the diagram
-below): (1) First, the raw Greek text is read to determine whether it is
-Beta Code or polytonic Greek. These experiments work exclusive with
-polytonic Greek, so this step is essentially a noop. (2) Second, the raw text is  tokenized by grapheme (letters with diacritical
-markings attached). (3) Subsequently, the graphemes are grouped by syllables, accounting
-for diphthongs, elision, and double consonants. Compounds such as εἰσ-φέρω are not
-explicitly handled, as doing so would add out-of-scope morphological analysis
-to this scanner with minimal improvement on the scansion analysis: for example, in the case
-of εἰσ-φέρω, εἰ- will always scan long, and the epsilon in φέρω will always scan
-short, whether the compound is grouped correctly as εἰσ-φέρω or incorrectly as
-εἰ-σφέρω. (4) Syllables are classified as short, long, anceps, or unknown according
-to standard rules of Ancient Greek scansion. According to the usual convention
-in tragic verse, \textit{muta cum liquida} (a stop consonant followed by a lambda or a rho)
-does not result in the usual lengthening that applies to other short vowels followed
-by two consonants. Other double-consonant clusters will cause preceding short vowels to be scanned long by this scanner.\footnote{Unknown vowel quantities are logged in a dictionary for later manual annotation.
-This annotation process has not yet been completed.} (5) The scanned syllables are mapped
-onto the iambic trimeter schema of three dipodies (in its most basic form: x — u — | x — u — | x — u —). (6) Features such as resolution and dactylic events are labeled.
+The rules-based parser works as follows (visualized also in the accompanying
+above): (1) First, the raw Greek text is read to determine whether it is
+Beta Code or polytonic Greek. These experiments work exclusive with polytonic
+Greek, so this step is essentially a noop. (2) Second, the raw text is
+tokenized by grapheme (letters with diacritical markings attached).
+(3) Subsequently, the graphemes are grouped by syllables, accounting for
+diphthongs, elision, and double consonants. Compounds such as εἰσ-φέρω are
+not explicitly handled, as doing so would add out-of-scope morphological
+analysis to this scanner with minimal improvement on the scansion analysis:
+for example, in the case of εἰσ-φέρω, εἰ- will always scan long, and the
+epsilon in φέρω will always scan short, whether the compound is grouped
+correctly as εἰσ-φέρω or incorrectly as εἰ-σφέρω. (4) Syllables are
+classified as short, long, anceps, or unknown according to standard rules of
+Ancient Greek scansion. According to the usual convention in tragic
+verse, \textit{muta cum liquida} (a stop consonant followed by a lambda or a
+rho) does not result in the usual lengthening that applies to other short
+vowels followed by two consonants. Other double-consonant clusters will cause
+preceding short vowels to be scanned long by this scanner.\footnote
+{Unknown vowel quantities are logged in a dictionary for later manual
+annotation. This annotation process has not yet been completed.} (5) The
+scanned syllables are mapped onto the iambic trimeter schema of three
+dipodies (in its most basic form: x — u — | x — u — | x — u —). (6) Features
+such as resolution and dactylic events are labeled according to the flow chart
+below.
 
-\begin{figure}
-\caption{Flow chart of the parsing and scanning process}
-\begin{center}
+\noindent
+\begin{minipage}{\linewidth}
+\makebox[\linewidth]{
 \begin{tabular}{c}
 (1) raw text \\
 \downarrow{} \\
@@ -312,19 +355,16 @@ onto the iambic trimeter schema of three dipodies (in its most basic form: x —
 (5) parsing (mapping to iambic trimeter) \\
 \downarrow{} \\
 (6) feature extraction (label resolutions and dactylic events)
-\end{tabular}
-\end{center}
-\end{figure}
+\end{tabular}}
+\end{minipage}
 
-Dactylic events refer specifically to the possibility of a long anceps followed by a resolved
-iambic ``up-beat,'' i.e., the familiar epic — u u (long short short). A hypothesis concerning the ``epic-ness'' of messengers in tragedy might suppose
-that they make greater use of dactyls than other classes of speakers. This hypothesis
-turns out false, however.
+\noindent
+Dactylic events refer specifically to the possibility of a long anceps
+followed by a resolved iambic `up-beat,' i.e., the familiar epic — u u
+(long short short). A hypothesis concerning the `epic-ness' of messengers
+in tragedy might suppose that they make greater use of dactyls than other
+classes of speakers. This hypothesis turns out false, however.
 
-Due to the incompleteness of the ambiguous length dictionary (see footnote \textit{supra}),
-the 17,341 lines obtained for this analysis is almost certainly an undercount. However,
-it should still be sufficiently many lines---40\% of extant tragedy---to detect patterns
-by character class.
 
 \section{Resolution count}
 
@@ -333,142 +373,191 @@ resolution offers a sense of how often each character class adds more
 syllables than are strictly necessary to a line of iambic trimeter. The
 strength of the relationship between speaker class and resolution count was
 tested using [Harald] Cramér's $φ_c$ (also known as Cramér's V). As Cramér
-writes, ``The correlation coefficient and the correlation ratio both server
+writes, `The correlation coefficient and the correlation ratio both server
 to characterize, in the sense explained above, the `degree of dependence'
 between two variables.... $φ^2 = 0$ when and only when the variables are
-independent.'' \cite[282]{Cramer2016} Cramér goes on to explain that $φ_c$
+independent.' \cite[282]{Cramer2016} Cramér goes on to explain that $φ_c$
 will range between \(0\) (no correlation) and \(1\)(full corrleation). Thus,
 by measuring Cramér's $φ_c$ for speaker class and number of resolutions, we
 can determine whether the two are related and the strength of that relation.
 
-For 8 speaker classes (7 degrees of freedom), the correlation with resolution
-count was 0.107---meaning a small but significant connection between the two
-variables. The figure below shows the relative frequency of resolutions per
-total lines by speaker class.
+For 8 speaker classes, the correlation with resolution count was
+0.0437---meaning a miniscule connection between the two variables. The figure
+below shows the relative frequency of resolutions per total lines by speaker
+class.
 
-\begin{figure}
-\caption{Absolute and relative frequencies by speaker class for total resolutions}
 \begin{center}
 \begin{tabular}{c | c | c | c}
 \textbf{speaker class} & \textbf{resolutions} & \textbf{total lines} & \textbf{rel. freq. resolved} \\
-prophet & 60 & 445 & 0.134 \\
-messenger & 283 & 2795 & 0.101 \\
-other & 204 & 2210 & 0.092 \\
-royalty & 1754 & 23562 & 0.074 \\
-divine & 194 & 2652 & 0.073 \\
-slave & 60 & 1422 & 0.042 \\
-herald & 28 & 665 & 0.042 \\
-chorus & 246 & 10731 & 0.023
+prophet & 89 & 350 & 0.2543 \\
+other & 270 & 1478 & 0.1827 \\
+chorus & 289 & 1685 & 0.1715 \\
+messenger & 383 & 2336 & 0.1640 \\
+royalty & 2445 & 16205 & 0.1509 \\
+divine & 265 & 1927 & 0.1375 \\
+slave & 83 & 893 & 0.0929 \\
+herald & 1 & 665 & 0.0859
 \end{tabular}
 \end{center}
-\end{figure}
-
 
 \section{Resolution placement}
 
-
-\begin{figure}
-\caption{Cramér's $φ_c$ for each potential resolution in iambic trimeter and its association with speakers' character class}
-\begin{itemize}
-  \item Cramér's $φ_c$ (speaker class and resolution at position 2): 0.0479
-  \item Cramér's $φ_c$ (speaker class and resolution at position 4): 0.0421
-  \item Cramér's $φ_c$ (speaker class and resolution at position 6): 0.0749
-  \item Cramér's $φ_c$ (speaker class and resolution at position 8): 0.0468
-  \item Cramér's $φ_c$ (speaker class and resolution at position 10): 0.0154
-\end{itemize}
-\end{figure}
-
-Although these correlations appear to be small, given the high number of degrees
-of freedom (7, for 8 speaker classes) in each calculation, these represent
-small but meaningful correlations for most resolution placements and character
-class.
-
-Indeed, we can see small but meaningful differences in the absolute and relative
-frequencies for each resolution for every position but 10 (omitted for brevity).
+As with total resolutions, resolution placement has a negligible positive
+correlation with speaker class, peaking in positions 6 (0.0924) and 2 (0.0622).
+These correlations are meaningful, but they are too small with our limited data
+to suggest predictive value.
 
 
-\begin{figure}
-\caption{Absolute and relative frequencies by speaker class for resolutions in position 2}
 \begin{center}
-\begin{tabular}{c | c | c | c}
-\textbf{speaker class} & \textbf{resolutions} & \textbf{total lines} & \textbf{rel. freq. resolved} \\
-prophet & 14 & 445 & 0.0314 \\
-other & 47 & 2210 & 0.0212 \\
-messenger & 44 & 2795 & 0.0157 \\
-royalty & 354 & 23562 & 0.0150 \\
-divine & 39 & 2652 & 0.01470 \\
-slave & 10 & 1422 & 0.007 \\
-chorus & 52 & 10731 & 0.004 \\
-herald & 1 & 665 & 0.002
+\begin{tabular}{c | c}
+\textbf{position} & \textbf{Cramér's $φ_c$} \\
+2 & 0.0622 \\
+4 & 0.0468 \\
+6 & 0.0924 \\
+8 & 0.0583 \\
+10 & 0.0184
 \end{tabular}
 \end{center}
-\end{figure}
 
-\begin{figure}
-\caption{Absolute and relative frequencies by speaker class for resolutions in position 4}
+
+Indeed, we can see small but meaningful differences in the absolute and
+relative frequencies for each resolution for every position but 10. (See full
+results at >>REDACTED FOR ANONYMITY<<) These differences, however, hardly provide any
+descriptive value. The relative frequencies of resolution are so low for each
+position---generally under 10\%--- that it is difficult if not impossible to
+infer a metrical signature for any class of speaker from data drawn from the
+extant plays.
+
+Below are visualized the relative frequencies of resolution by position and by
+tragedian. The breakdown by tragedian is necessary because of the state of
+the extant corpus: 19 (counting, perhaps contraversially, \textit
+{Rhesus}) of Euripides' plays survive, compared to 7 each for Aeschylus and
+Sophocles (7.5 for Sophocles if we count \textit{Trackers}). Relative frequencies
+are visualized both as a proportion of each speaker class's resolution placement
+and as a grouped bar chart across speaker classes.
+
+
 \begin{center}
-\begin{tabular}{c | c | c | c}
-\textbf{speaker class} & \textbf{resolutions} & \textbf{total lines} & \textbf{rel. freq. resolved} \\
-prophet & 14 & 445 & 0.0314 \\
-messenger & 47 & 2795 & 0.0168 \\
-other & 32 & 2210 & 0.0145 \\
-divine & 33 & 2652 & 0.0124 \\
-royalty & 273 & 23562 & 0.012 \\
-slave & 13 & 1422 & 0.009 \\
-chorus & 49 & 10731 & 0.005 \\
-herald & 1 & 665 & 0.002
-\end{tabular}
+\includegraphics[scale=0.5]{aeschylus-rel-freq.png}
+\captionof{figure}{Relative frequencies by resolution placement for Aeschylus}\label{fig:aeschylus-rel-freq}
 \end{center}
-\end{figure}
 
-
-\begin{figure}
-\caption{Absolute and relative frequencies by speaker class for resolutions in position 6}
 \begin{center}
-\begin{tabular}{c | c | c | c}
-\textbf{speaker class} & \textbf{resolutions} & \textbf{total lines} & \textbf{rel. freq. resolved} \\
-prophet & 21 & 445 & 0.0471 \\
-messenger & 130 & 2795 & 0.0465 \\
-divine & 96 & 2652 & 0.0362 \\
-other & 79 & 2210 & 0.0357 \\
-royalty & 787 & 23562 & 0.033 \\
-herald & 18 & 665 & 0.0270 \\
-slave & 29 & 1422 & 0.0204 \\
-chorus & 79 & 10731 & 0.007
-\end{tabular}
+\includegraphics[scale=0.5]{sophocles-rel-freq.png}
+\captionof{figure}{Relative frequencies by resolution placement for Sophocles}\label{fig:sophocles-rel-freq}
 \end{center}
-\end{figure}
 
-
-\begin{figure}
-\caption{Absolute and relative frequencies by speaker class for resolutions in position 8}
 \begin{center}
-\begin{tabular}{c | c | c | c}
-\textbf{speaker class} & \textbf{resolutions} & \textbf{total lines} & \textbf{rel. freq. resolved} \\
-prophet & 9 & 445 & 0.020 \\
-messenger & 56 & 2795 & 0.020 \\
-other & 38 & 2210 & 0.017 \\
-royalty & 295 & 23562 & 0.013 \\
-herald & 7 & 665 & 0.011 \\
-divine & 24 & 2652 & 0.009 \\
-slave & 8 & 1422 & 0.006 \\
-chorus & 39 & 10731 & 0.004
-\end{tabular}
+\includegraphics[scale=0.5]{euripides-rel-freq.png}
+\captionof{figure}{Relative frequencies by resolution placement for Euripides}\label{fig:euripides-rel-freq}
 \end{center}
-\end{figure}
+
+As is readily visible in these figures, resolution count varies significantly
+by dramatist, with Euripides' maximum relative frequency (11.9\% for
+prophets) more than doubling the maxima of Sophocles (5.7\% for divinities)
+and Aeschylus (5.7\% for messengers). Aeschylus and Sophocles exhibit more
+variable resolution placement among speaker classes than Euripides, but this
+observation is likely due to the smaller sample size for these tragedians:
+the data include Aeschylus' 7 canonical plays (including \textit
+{Prometheus Bound}) and Sophocles' 7 plays and the substantial fragments of
+his satyr play (\textit{Trackers}); but the data also include all 17 of
+Euripides' tragedies and 2 of his satyr plays(\textit{Cyclops} and \textit
+{Alcestis}), meaning that we have significantly more information for his
+plays than for the plays of the other two tragedians. The marked differences
+in distributions between the three tragedians' resolution placements supports
+separating our analyses; but at the same time, the smaller sample sizes for
+Aeschylus and Sophocles limit our ability to draw inferences from the
+resolution distributions.
 
 
-As expected by Cramér's $φ_c$, position 6 has the strongest correlation with speaker class.
-In all positions, we see that prophets and messengers tend to have the highest relative
-frequency of resolutions, suggesting a revelatory valence on messengers' speeches that
-resembles the prophecies of Tiresias---even though Tiresias makes predictions while
-messengers refer to past events.
 
-\section{Dactylic events}
+\section{Discussion}
 
 
+These experiments show that there \textit{are} detectable metrical differences
+among speaker classes in tragedy, perhaps especially among messengers.
+However, these experiments also point up the impossibility of making
+meaningful classifications based on the available data: we could not for
+instance, take an unassigned line from the tragic fragments and determine
+whether it was a messenger's or not. These null quantitative results should
+not be understood as contradicting the more literary analyses of de Jong and
+others. This paper's results only suggest that meter fails as a
+distinguishing feature of messenger-type speech; but other features, such as
+lexis and syntax, might still reveal key differences between messengers and
+other types of characters.
+
+These differences matter because messengers model how audiences understand,
+interpret, and evaulate second-hand news and the people who bring it to them.
+But in the case of this paper, the \textit{lack} of apparent metrical
+differences matters, too. Messengers, according to interpreters like Barrett,
+de Jong, and Dickin, acquire authority from the way that they deliver their
+message, and it has long been a truism that messengers speak with `Homeric diction.'
+But what is `Homeric diction,' and how might we identify it, especially when
+messengers' speeches appear to use the same dialect as other spoken sections
+of tragedy.
+
+Part of the difficulty here lies in the limited data available for quantitative
+analyses of Athenian drama. As noted above, the entire corpus under analysis here
+consists of 44,482 lines, of which we analyzed 18,968 trimeters. Over half of
+those lines belong to Euripides' plays; the other half skews slightly Sophoclean.
+But this relatively small dataset and its unequal distribution mean that quantitative
+analyses are necessarily limited in scope. As Quinn Dombrowski and Patrick Burns
+note, languages other than English are at a severe disadvantage when it comes
+to computational study.\cite{Dombrowski.Burns2023} Although quantitative study
+of drama has been conducted successfully by \cite{Beine2025} and others, those
+studies were carried out on larger corpora with a greater concentration of
+manual annotations than are currently available for Ancient Greek.
+
+Especially for poetic texts like tragedy, the state of the art lemmatizers
+and morphological tools---which have been trained overwhelmingly on prose
+treebanks---do not perform sufficiently well for nuanced analysis. This
+limitation motivated the present study's focus on meter using a relatively
+naïve rules-based parser on a relatively straightforward meter. (By avoiding
+anapests and odes, the metrical parser could avoid many of the pitfalls
+that would require extensive training and manual annotation/intervention.)
+Yet even with these self-imposed guardrails, the present study could not
+marshall sufficient data to detect any metrical signature on the part of
+character-type speech.
+
+Under-resourced languages must find ways to overcome these barriers if
+computational scholars are to be seen on equal footing with our English-
+(and Spanish-, French-, German-, Italian-, Chinese-, etc.) language–focused
+colleagues. As a start, we need to recognize the labor that goes into annotating
+textual sources. The Text Encoding Initiative is something as a barrier here,
+as it focuses on physical texts rather than the abstract textual models needed
+by editions of drama.\footnote{See \cite{Efer2017}.}
+
+But we must also find ways of posing questions the answers to which are not limited
+by the limitations of available data. These methodological problems deserve
+scholarly attention, as a richer understanding of under-resourced languages---ancient
+or modern---leads to a richer appreciation even of well-resourced fields of inquiry.
 
 
+\section{Future directions}
+
+Even if we cannot use meter to distinguish messenger-type from other kinds of
+speech in tragedy, `Homeric diction' might still be a useful heuristic for
+syntax and lexis. To this end, future work will focus on possible lexical
+distinctions among different types of speakers in tragedy. Bag-of-words
+models offer some reprieve from the limitations of line-oriented studies
+(like the present examinations of meter), but successful bag-of-words approaches
+depend either on sub-word tokenization or better lemmatization than is currently
+available. Studies of syntax are likewise limited by the accuracy of current
+morphological tools on poetry.
+
+In a separate vein, future work might focus on network analysis, which would
+require additional manual annotations of existing corpora. Such annotations
+could be accomplished by a small team of researchers in a reasonably short
+amount of time---for instance, by adding `toWhom' attributes to dialogue
+tags in TEI-encoded dramas---but could yield interesting results about
+internal audiences and attention in the extant plays.
+
+Above all, as this paper has shown, future work should address the
+methodological gap between the state-of-the-art models---which focus almost
+exclusively on English---and under-resourced langauges like Ancient Greek. By
+developing methodologies that can account for the limitations of small
+corpora, we can direct efforts to annotate and supplement those corpora while
+simultaneously conducting meaningful research.
 
 
 
@@ -477,9 +566,12 @@ messengers refer to past events.
 \section{Declaration on Generative AI}
 
 The author built the metrical parsing library with the
-help of Anthropic's Claude Code. No AI was used in the calculations
+help of Anthropic's Claude Code---and subsequently rewrote most of it.
+No AI was used in the calculations
 or analysis that ultimately make up the bulk of this paper.
 
+
 \bibliography{zotero-refs}
+
 
 \end{document}
