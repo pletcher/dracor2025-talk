@@ -224,21 +224,52 @@ taken place in the context of broader computational studies of drama, such as
 the work of Julia Jennifer Beine, Frank Fischer, and Viktor Illmer presented
 at the Digital Humanities Conference in 2024; the examination of the chorus
 by María Teresa Santa María Fernández and Monika Dabrowska; or the early work
-on social network theory and Greek tragedy by Jeff Rydberg-Cox \cite
-{Beine.etal2024, Fernandez.Dabrowska2023, Rydberg-Cox2011}.
+on social network theory and Greek tragedy by Jeff Rydberg-Cox.\cite
+{Beine.etal2024, Fernandez.Dabrowska2023, Rydberg-Cox2011}
+
+\section{Messengers and Metre}
+
+With the notable exception of the singing Phrygian in Euripides' \textit
+{Orestes}, most news-bringers in tragedy speak in iambic trimeters. The most
+basic form of iambic trimeter, x — u — | x — u — | x — u —, lends itself to a
+striking amount of variation: nearly every long syllable (—) can have two
+short syllables in its place, provided several additional rules are heeded.
+Such substitutions are called `resolutions,' as the long syllable is
+understood to `resolve' into two short syllables. The vertical lines in the
+schema above separate the dipodes or dipodies, literally the `two-foot`
+groupings of iambs. At \textit{Poetics} 1449 a 24, Aristotle dubs iambic `the
+most speech-like of the metres,' no doubt due to its flexibility.
+
+Recent studies on the meters of tragedy have either focused on broad
+methodological challenges, such as the recent thesis by Erik Henrikkson; or
+they have dealt with more directed questions like L. P. E. Parker's study of
+the impact of resolution-avoidance on the vocabulary of Sophocles'
+trimeters.\cite{Henriksson, Parker2022} A recent study by Boris Maslov also
+examines the interplay of rhythm and vocabulary in trimeters, using the
+Prosimetron database and toolkit to analyze Sophocles' \textit
+{Ajax} and \textit{Oedipus Tyrannus} alongside the Byzantine \textit
+{Christus Patiens}, a `Christian tragedy' modelled on Euripides' \textit
+{Bacchae}.\cite{Maslov2022} In a similar vein, Felipe G. Hernández Muñoz's
+recent paper looks at the placement of the pronoun ἐγώ in iambic trimeter and
+its potential relationship with speaker class (royalty, slave, etc.).\cite
+{HernandezMunoz2019} To my knowledge, although resolution in iambic trimeter
+has been studied extensively from a descriptive point of view, and has
+notably been used for dating the plays of Euripides, no inquiry has been made
+into the possibility that it might be used differently in different classes
+of speakers.\footnote{See \cite{Parker2022} p. 232 n. 3 for additional
+bibliography on iambic trimeters in tragedy.}
 
 In this paper, I undertake two quantitative approaches to meter in tragedy,
 with a focus on whether messengers and their ilk exhibit a discernible
 metrical signature by which they might be differentiated from other speakers.
 I investigate two specific phenomena: (1) \textbf{the number of resolutions
-per line of each character's speech}, that is, the number of times that a single long
-syllable in an iamb is replaced by two short syllables; and (2) \textbf
-{the placement of resolutions in characters' trimeters}, which has not, to my
-knowledge, been used as a way to distinguish between classes of speakers,
-although the \textit{frequency} of resolution has been used for dating the
-plays of Euripides and Sophocles.\footnote{Caesurae were also analyzed
-as part of these experiments, but as with the other experiments, they showed
-no substantial correlation with speaker class.}
+per line of each character's speech}, that is, the number of times that a
+single long syllable in an iamb is replaced by two short syllables; and
+(2) \textbf{the placement of resolutions in characters' trimeters}, that is,
+whether resolution appears in position(s) 2, 4, 6, 8, and/or 10 in a given
+line.\footnote{Caesurae were also analyzed as part of these experiments, but
+as with the other experiments, they showed no substantial correlation with
+speaker class.}
 
 At the risk of discouraging the reader from continuing, both experiments
 turn up null or nearly results, with extremely weak correlation at best: the
@@ -316,8 +347,8 @@ identifying messenger-type speech.
 \section{Parsing iambic trimeter}
 
 The rules-based parser works as follows (visualized also in the accompanying
-above): (1) First, the raw Greek text is read to determine whether it is
-Beta Code or polytonic Greek. These experiments work exclusive with polytonic
+above): (1) First, the raw Greek text is read to determine whether it is Beta
+Code or polytonic Greek. These experiments work exclusive with polytonic
 Greek, so this step is essentially a noop. (2) Second, the raw text is
 tokenized by grapheme (letters with diacritical markings attached).
 (3) Subsequently, the graphemes are grouped by syllables, accounting for
@@ -336,9 +367,8 @@ preceding short vowels to be scanned long by this scanner.\footnote
 {Unknown vowel quantities are logged in a dictionary for later manual
 annotation. This annotation process has not yet been completed.} (5) The
 scanned syllables are mapped onto the iambic trimeter schema of three
-dipodies (in its most basic form: x — u — | x — u — | x — u —). (6) Features
-such as resolution and dactylic events are labeled according to the flow chart
-below.
+dipodies. (6) Features such as resolution and dactylic events are labeled
+according to the flow chart below.
 
 \noindent
 \begin{minipage}{\linewidth}
@@ -377,7 +407,7 @@ writes, `The correlation coefficient and the correlation ratio both server
 to characterize, in the sense explained above, the `degree of dependence'
 between two variables.... $φ^2 = 0$ when and only when the variables are
 independent.' \cite[282]{Cramer2016} Cramér goes on to explain that $φ_c$
-will range between \(0\) (no correlation) and \(1\)(full corrleation). Thus,
+will range between \(0\) (no correlation) and \(1\) (full corrleation). Thus,
 by measuring Cramér's $φ_c$ for speaker class and number of resolutions, we
 can determine whether the two are related and the strength of that relation.
 
@@ -565,10 +595,10 @@ simultaneously conducting meaningful research.
 
 \section{Declaration on Generative AI}
 
-The author built the metrical parsing library with the
-help of Anthropic's Claude Code---and subsequently rewrote most of it.
-No AI was used in the calculations
-or analysis that ultimately make up the bulk of this paper.
+The author built the metrical parsing library with the help of Anthropic's
+Claude Code---and subsequently rewrote most of it without AI assistance. No
+AI was used in the calculations or analysis that ultimately make up the bulk
+of this paper.
 
 
 \bibliography{zotero-refs}
